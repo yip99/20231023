@@ -37,7 +37,6 @@ export function getAllPublicArticle() {
 }
 
 export function getArticleBySlug(slug) {
-    console.log({ slug });
     return new Promise((resolve, reject) => {
         db.get(`SELECT article.*,
         '["' || (
@@ -114,7 +113,7 @@ export function newArticle(title, slug, status, summary, thumbnail, content, sea
         let params = [title, slug, status, summary, thumbnail, content, search_content, Date.now()];
         let newArticleId;
         console.log('start');
-        db.run(statement, params, async function (err) {
+        db.run(statement, params, async function(err) {
             if (err) {
                 reject(err.message);
             }
@@ -124,19 +123,19 @@ export function newArticle(title, slug, status, summary, thumbnail, content, sea
                 for (let i = 0; i < tag?.length; i++) {
                     console.log('insert tag:', tag[i]);
                     promises.push(new Promise((resolve, reject) => {
-                        db.run(`INSERT OR IGNORE INTO tag(name) VALUES('${tag[i]}')`, function () { console.log('inserted tag', tag[i]); resolve(); });
+                        db.run(`INSERT OR IGNORE INTO tag(name) VALUES('${tag[i]}')`, function() { console.log('inserted tag', tag[i]); resolve(); });
                     }));
                     promises.push(new Promise((resolve, reject) => {
-                        db.run(`INSERT INTO article_tag (article_id, tag_id) VALUES (?,(SELECT id FROM tag WHERE name = '${tag[i]}'));`, [newArticleId], function () { console.log('inserted article_tag', tag[i]); resolve(); });
+                        db.run(`INSERT INTO article_tag (article_id, tag_id) VALUES (?,(SELECT id FROM tag WHERE name = '${tag[i]}'));`, [newArticleId], function() { console.log('inserted article_tag', tag[i]); resolve(); });
                     }));
                 }
                 for (let i = 0; i < author?.length; i++) {
                     console.log('insert author', author[i]);
                     promises.push(new Promise((resolve, reject) => {
-                        db.run(`INSERT OR IGNORE INTO author(name) VALUES('${author[i]}')`, function () { console.log('inserted author', author[i]); resolve(); });
+                        db.run(`INSERT OR IGNORE INTO author(name) VALUES('${author[i]}')`, function() { console.log('inserted author', author[i]); resolve(); });
                     }));
                     promises.push(new Promise((resolve, reject) => {
-                        db.run(`INSERT INTO article_author (article_id, author_id) VALUES (?,(SELECT id FROM author WHERE name = '${author[i]}'));`, [newArticleId], function () { console.log('inserted article_author', author[i]); resolve(); });
+                        db.run(`INSERT INTO article_author (article_id, author_id) VALUES (?,(SELECT id FROM author WHERE name = '${author[i]}'));`, [newArticleId], function() { console.log('inserted article_author', author[i]); resolve(); });
                     }));
                 }
             });
