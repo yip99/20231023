@@ -103,7 +103,7 @@
 		const changeCss = (link) => {
 			stylesheet.setAttribute('href', link);
 		};
-        
+
 		// changeCss('');
 
 		selectCss.addEventListener('change', (e) => {
@@ -124,8 +124,8 @@
 		<label for="select-css">Select CSS</label>
 		<select name="select-css" id="select-css">
 			<option value="">No CSS (browser defaults)</option>
-			<optgroup label="CSS Resets" id="select-css-resets" />
-			<optgroup label="CSS Frameworks" id="select-css-frameworks" />
+			<optgroup label="CSS Resets" id="select-css-resets"></optgroup>
+			<optgroup label="CSS Frameworks" id="select-css-frameworks"></optgroup>
 		</select>
 	</div>
 	<div>
@@ -139,10 +139,7 @@
 
 <header>
 	<h1>HTML5 elements tester</h1>
-	<p>
-		A test page containing most of the HTML5 elements that you'll ever need. Useful for testing CSS
-		resets or CSS frameworks.
-	</p>
+	<p>A test page containing most of the HTML5 elements that you'll ever need. Useful for testing CSS resets or CSS frameworks.</p>
 	<p>A project by <a href="">Alexander Sandberg</a> · <a href="">GitHub repository</a></p>
 </header>
 
@@ -182,17 +179,9 @@
     -->
 			<h1><code>&lt;h1&gt;</code> A unique title, specific for the page</h1>
 			<h2><code>&lt;h2&gt;</code> Heading levels should reflect structure, not style</h2>
-			<p>
-				It can also be useful to test how body text below a heading appears on the page, for example
-				to check the margin. This text is wrapped in &lt;p&gt; and is a direct sibling to the above
-				&lt;h2&gt;.
-			</p>
+			<p>It can also be useful to test how body text below a heading appears on the page, for example to check the margin. This text is wrapped in &lt;p&gt; and is a direct sibling to the above &lt;h2&gt;.</p>
 			<h3><code>&lt;h3&gt;</code> If you need a visually smaller title, use CSS</h3>
-			<p>
-				To create a semantically correct HTML structure that's accessible for everyone, make sure
-				you're nesting the headings correctly. Never use more than one &lt;h1&gt; per page, and
-				don't skip heading levels.
-			</p>
+			<p>To create a semantically correct HTML structure that's accessible for everyone, make sure you're nesting the headings correctly. Never use more than one &lt;h1&gt; per page, and don't skip heading levels.</p>
 			<h4><code>&lt;h4&gt;</code> Headings below level 4 are not used as much</h4>
 			<h5><code>&lt;h5&gt;</code> But that doesn't mean you should forget about them</h5>
 			<h6><code>&lt;h6&gt;</code> And last, but not least, the heading with the lowest rank</h6>
@@ -201,17 +190,11 @@
 		<article id="article">
 			<header id="header">
 				<h3>
-					<code
-						>&lt;body&gt; + &lt;article&gt; + &lt;section&gt; + &lt;nav&gt; + &lt;aside&gt; +
-						&lt;header&gt; + &lt;footer&gt;</code
-					>:
+					<code>&lt;body&gt; + &lt;article&gt; + &lt;section&gt; + &lt;nav&gt; + &lt;aside&gt; + &lt;header&gt; + &lt;footer&gt;</code>:
 				</h3>
 			</header>
 
-			<p>
-				All these tags are already in use on the page. The list below contains links to each use
-				case. See the source code of this file for more details.
-			</p>
+			<p>All these tags are already in use on the page. The list below contains links to each use case. See the source code of this file for more details.</p>
 			<ul>
 				<li><a href="#css-selection"><code>&lt;body&gt;</code></a></li>
 				<li><a href="#article"><code>&lt;article&gt;</code></a></li>
@@ -245,11 +228,7 @@
 				<h3><code>&lt;p&gt;</code>:</h3>
 			</header>
 
-			<p>
-				Paragraphs are usually represented in visual media as blocks of text separated from adjacent
-				blocks by blank lines and/or first-line indentation, but HTML paragraphs can be any
-				structural grouping of related content, such as images or form fields. [1]
-			</p>
+			<p>Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields. [1]</p>
 		</article>
 
 		<article>
@@ -293,8 +272,7 @@ exactly as written
 
 			<blockquote>
 				<p>
-					The text inside this blockquote is wrapped in <code>&lt;p&gt;</code> tags. Sometimes the quote
-					is really long, and possibly have to occupy multiple lines, but that shouldn't be a problem.
+					The text inside this blockquote is wrapped in <code>&lt;p&gt;</code> tags. Sometimes the quote is really long, and possibly have to occupy multiple lines, but that shouldn't be a problem.
 				</p>
 			</blockquote>
 		</article>
@@ -367,8 +345,7 @@ exactly as written
 				<dt>This is a term</dt>
 				<dd>And this is the accompanying description, explaining the above term.</dd>
 				<dd>
-					You can also have multiple descriptions (<code>&lt;dt&gt;</code>), like this one, for each
-					term (<code>&lt;dt&gt;</code>).
+					You can also have multiple descriptions (<code>&lt;dt&gt;</code>), like this one, for each term (<code>&lt;dt&gt;</code>).
 				</dd>
 				<dd>
 					And why not nest lists inside this description?
@@ -396,19 +373,14 @@ exactly as written
 			<figure>
 				<img src="https://dummyimage.com/1920x1080/000/fff" alt="Keanu Reeves looking fine" />
 				<figcaption>
-					Wholesome Keanu Reeves from <a href="https://placekeanu.com" target="_blank"
-						>placekeanu.com</a
-					>.
+					Wholesome Keanu Reeves from <a href="https://placekeanu.com" target="_blank">placekeanu.com</a>.
 				</figcaption>
 			</figure>
 
 			<p>Used with a <code>&lt;blockquote&gt;</code>:</p>
 			<figure>
 				<blockquote>
-					<p>
-						Seek wealth, not money or status. Wealth is having assets that earn while you sleep.
-						Money is how we transfer time and wealth. Status is your place in the social hierarchy.
-					</p>
+					<p>Seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your place in the social hierarchy.</p>
 				</blockquote>
 
 				<figcaption>
@@ -435,9 +407,7 @@ exactly as written
 
 			<div>
 				<p>
-					This paragraph of text is contained inside a <code>&lt;div&gt;</code>. The element really
-					has no special meaning, other than grouping content together, and should be used as a last
-					resort when no other element is suitable.
+					This paragraph of text is contained inside a <code>&lt;div&gt;</code>. The element really has no special meaning, other than grouping content together, and should be used as a last resort when no other element is suitable.
 				</p>
 			</div>
 		</article>
@@ -471,8 +441,7 @@ exactly as written
 			</header>
 
 			<p>
-				Here is <a href="#a">a link</a> inside a paragraph of text. Below you can find a list of
-				links with different <code>href</code> attributes.
+				Here is <a href="#a">a link</a> inside a paragraph of text. Below you can find a list of links with different <code>href</code> attributes.
 			</p>
 			<ul>
 				<li><a href="">Link to an external website</a></li>
@@ -488,13 +457,10 @@ exactly as written
 			</header>
 
 			<p>
-				The <code>&lt;em&gt;</code> element represents <em>stress emphasis</em> of its contents.
-				Meanwhile, <code>&lt;i&gt;</code> is since HTML5 used for text in an alternative voice or
-				mood, or otherwise offset from the <i>normal prose</i>, as you may define it.
+				The <code>&lt;em&gt;</code> element represents <em>stress emphasis</em> of its contents. Meanwhile, <code>&lt;i&gt;</code> is since HTML5 used for text in an alternative voice or mood, or otherwise offset from the <i>normal prose</i>, as you may define it.
 			</p>
 			<p>
-				If you want to <b>draw attention</b> to some text, feel free to use <code>&lt;b&gt;</code>.
-				However, if you want to mark the importance of something,
+				If you want to <b>draw attention</b> to some text, feel free to use <code>&lt;b&gt;</code>. However, if you want to mark the importance of something,
 				<strong>you should use <code>&lt;strong&gt;</code></strong>.
 			</p>
 		</article>
@@ -505,18 +471,13 @@ exactly as written
 			</header>
 
 			<p>
-				<small
-					>When you want your text to represent small print, use <code>&lt;small&gt;</code>.</small
-				>
+				<small>When you want your text to represent small print, use <code>&lt;small&gt;</code>.</small>
 			</p>
 			<p>
-				In most cases, there's a better element than <code>&lt;u&gt;</code> to use, but it can be
-				useful for labelling <u>msispelt</u> text. Avoid using it, however, where the text could be confused
-				for a hyperlink.
+				In most cases, there's a better element than <code>&lt;u&gt;</code> to use, but it can be useful for labelling <u>msispelt</u> text. Avoid using it, however, where the text could be confused for a hyperlink.
 			</p>
 			<p>
-				You can <mark>highlight text</mark> for reference purposes with <code>&lt;mark&gt;</code>,
-				or if the contents is <s>no longer accurate or relevant</s>, wrap it with
+				You can <mark>highlight text</mark> for reference purposes with <code>&lt;mark&gt;</code>, or if the contents is <s>no longer accurate or relevant</s>, wrap it with
 				<code>&lt;s&gt;</code>.
 			</p>
 		</article>
@@ -528,8 +489,7 @@ exactly as written
 
 			<p>
 				By wrapping an abbreviation like <dfn><abbr title="Cascading Style Sheets">CSS</abbr></dfn>
-				in both <code>&lt;dfn&gt;</code> and <code>&lt;abbr&gt;</code>, we define the term. This can
-				later be used only using <code>&lt;abbr&gt;</code>, since we already defined
+				in both <code>&lt;dfn&gt;</code> and <code>&lt;abbr&gt;</code>, we define the term. This can later be used only using <code>&lt;abbr&gt;</code>, since we already defined
 				<abbr title="Cascading Style Sheets">CSS</abbr> once before.
 			</p>
 		</article>
@@ -543,30 +503,22 @@ exactly as written
 				When citing creative work, include the reference with a <code>&lt;cite&gt;</code> element.
 				<cite>www.w3.org</cite>
 				explains that
-				<q
-					>A citation is not a quote (for which the <code>&lt;q&gt;</code> element is appropriate)</q
-				> instead, like used here.
+				<q>A citation is not a quote (for which the <code>&lt;q&gt;</code> element is appropriate)</q> instead, like used here.
 			</p>
 			<p>
-				If you want to link content with a <data value="123">machine-readable</data> translation,
-				use <code>&lt;data&gt;</code> with a <code>value</code> attribute. However, if this data is
-				a time- or date-related, like the date <time datetime="2019-07-04">July 4</time>, you have
-				to use <code>&lt;time&gt;</code> together with the <code>datatime</code> attribute.
+				If you want to link content with a <data value="123">machine-readable</data> translation, use <code>&lt;data&gt;</code> with a <code>value</code> attribute. However, if this data is a time- or date-related, like the date <time datetime="2019-07-04">July 4</time>, you have to use <code>&lt;time&gt;</code> together with the <code>datatime</code> attribute.
 			</p>
 		</article>
 
 		<article>
 			<header>
 				<h3>
-					<code
-						>&lt;code&gt; + &lt;var&gt; + &lt;samp&gt; + &lt;kbd&gt; + &lt;sub&gt; + &lt;sup&gt;</code
-					>:
+					<code>&lt;code&gt; + &lt;var&gt; + &lt;samp&gt; + &lt;kbd&gt; + &lt;sub&gt; + &lt;sup&gt;</code>:
 				</h3>
 			</header>
 
 			<p>
-				When sharing code-snippets, make sure to use the <code>&lt;code&gt;</code> element. This can
-				be done both <code>display: inline;</code>, as well as block-level:
+				When sharing code-snippets, make sure to use the <code>&lt;code&gt;</code> element. This can be done both <code>display: inline;</code>, as well as block-level:
 			</p>
 			<pre><code
 					>* &#123;
@@ -575,16 +527,14 @@ background: aliceblue;
 &#125;</code
 				></pre>
 			<p>
-				Variables should be surrounded by <code>&lt;var&gt;</code>, or <var>x</var> amount of people
-				might be confused.
+				Variables should be surrounded by <code>&lt;var&gt;</code>, or <var>x</var> amount of people might be confused.
 			</p>
 			<p>
 				Sample or quotes output are represented with <code>&lt;samp&gt;</code>:
 				<samp>Your expression '1 + 1' equals 2</samp>.
 			</p>
 			<p>
-				To represent user input, like the shortcut <kbd><kbd>Cmd</kbd> + <kbd>R</kbd></kbd> on
-				macOS, use <code>&lt;kbd&gt;</code>.
+				To represent user input, like the shortcut <kbd><kbd>Cmd</kbd> + <kbd>R</kbd></kbd> on macOS, use <code>&lt;kbd&gt;</code>.
 			</p>
 			<p>
 				If you want to <sub>subscript</sub> or <sup>superscript</sup> text, use
@@ -596,21 +546,15 @@ background: aliceblue;
 		<article>
 			<header>
 				<h3>
-					<code
-						>&lt;bdi&gt; + &lt;bdo&gt; + &lt;ruby&gt; + &lt;rb&gt; + &lt;rt&gt; + &lt;rtc&gt; +
-						&lt;rp&gt;</code
-					>:
+					<code>&lt;bdi&gt; + &lt;bdo&gt; + &lt;ruby&gt; + &lt;rb&gt; + &lt;rt&gt; + &lt;rtc&gt; + &lt;rp&gt;</code>:
 				</h3>
 			</header>
 
 			<p>
-				Consider using <code>&lt;bdi&gt;</code> when working with bidirectional content, like the
-				names <bdi>Alexander</bdi> and <bdi>علي‎</bdi>.
+				Consider using <code>&lt;bdi&gt;</code> when working with bidirectional content, like the names <bdi>Alexander</bdi> and <bdi>علي‎</bdi>.
 			</p>
 			<p>
-				If you need to override the bidirectional algorithm for some content and its children, use <code
-					>&lt;bdo&gt;</code
-				>:
+				If you need to override the bidirectional algorithm for some content and its children, use <code>&lt;bdo&gt;</code>:
 			</p>
 			<p><bdo dir="rtl">Don't forget to specify the <code>dir</code> attribute!</bdo></p>
 			<p><bdo dir="ltr">I said, don't forget to specify the <code>dir</code> attribute!</bdo></p>
@@ -620,15 +564,9 @@ background: aliceblue;
 				字 <rp>(</rp><rt>ji</rt><rp>)</rp>
 			</ruby>
 			<br />
-			<ruby
-				><rb
-					>旧<rb>金<rb>山<rt>jiù</rt><rt>jīn</rt><rt>shān<rtc>San Francisco</rtc></rt></rb></rb></rb
-				></ruby
-			>
+			<ruby><rb>旧<rb>金<rb>山<rt>jiù</rt><rt>jīn</rt><rt>shān<rtc>San Francisco</rtc></rt></rb></rb></rb></ruby>
 			<p>
-				More information about the explanation and usage of these can be <a href="" target="_blank"
-					>read here on www.w3.org</a
-				>.
+				More information about the explanation and usage of these can be <a href="" target="_blank">read here on www.w3.org</a>.
 			</p>
 		</article>
 
@@ -644,9 +582,7 @@ background: aliceblue;
 			<p>
 				If you have really long text you might want to insert a<br />blank line with the
 				<code>&lt;br&gt;</code>
-				element. You can also insert word breaking opportunities using <code>&lt;wbr&gt;</code>, to
-				help the browser break long words like Pneumonoultramicro<wbr />scopicsilico<wbr
-				/>volcanoconiosis.
+				element. You can also insert word breaking opportunities using <code>&lt;wbr&gt;</code>, to help the browser break long words like Pneumonoultramicro<wbr />scopicsilico<wbr />volcanoconiosis.
 			</p>
 		</article>
 
@@ -702,10 +638,7 @@ background: aliceblue;
 
 			<img src="https://dummyimage.com/1920x1080/000/fff" alt="alt text" />
 			<svg height="250" width="510">
-				<polygon
-					points="220,10 300,210 200,245 123,234"
-					style="fill:tomato;stroke:rebeccapurple;stroke-width:5"
-				/>
+				<polygon points="220,10 300,210 200,245 123,234" style="fill:tomato;stroke:rebeccapurple;stroke-width:5"></polygon>
 				This is a fallback message. If you see this, your browser does not support inline SVG.
 			</svg>
 		</article>
@@ -727,7 +660,7 @@ background: aliceblue;
 				<h3><code>&lt;iframe&gt;</code>:</h3>
 			</header>
 
-			<iframe src="" />
+			<iframe src=""></iframe>
 		</article>
 
 		<article>
@@ -754,17 +687,13 @@ background: aliceblue;
 			</header>
 
 			<audio controls src="">
-				<p>
-					This is a fallback text. If you see this, your browser does not support embedded audio.
-				</p>
+				<p>This is a fallback text. If you see this, your browser does not support embedded audio.</p>
 			</audio>
 			<p>Audio is from <a href="">an example on MDN</a>.</p>
 			<video controls width="400">
 				<source src="" type="video/mp4" />
 				<track default kind="captions" srclang="en" src="" />
-				<p>
-					This is a fallback text. If you see this, your browser does not support embedded videos.
-				</p>
+				<p>This is a fallback text. If you see this, your browser does not support embedded videos.</p>
 			</video>
 			<p>Video and subtitles are from <a href="">an example on MDN</a>.</p>
 		</article>
@@ -774,9 +703,7 @@ background: aliceblue;
 				<h3><code>&lt;map&gt; + &lt;area&gt;</code>:</h3>
 			</header>
 
-			<p>
-				Each side of the image below is linked to different anchors on this page. Give it a try!
-			</p>
+			<p>Each side of the image below is linked to different anchors on this page. Give it a try!</p>
 			<map name="image-map" id="image-map">
 				<area shape="circle" coords="75,75,75" href="#image-map" />
 				<area shape="circle" coords="275,75,75" href="#css-selection" />
@@ -831,10 +758,7 @@ background: aliceblue;
 		<article>
 			<header>
 				<h3>
-					<code
-						>&lt;table&gt; + &lt;caption&gt; + &lt;colgroup&gt; + &lt;col&gt;+ &lt;tbody&gt; +
-						&lt;thead&gt; + &lt;tfoot&gt; + &lt;tr&gt; + &lt;td&gt; + &lt;th&gt;</code
-					>:
+					<code>&lt;table&gt; + &lt;caption&gt; + &lt;colgroup&gt; + &lt;col&gt;+ &lt;tbody&gt; + &lt;thead&gt; + &lt;tfoot&gt; + &lt;tr&gt; + &lt;td&gt; + &lt;th&gt;</code>:
 				</h3>
 			</header>
 
@@ -891,11 +815,7 @@ background: aliceblue;
 		<article>
 			<header>
 				<h3>
-					<code
-						>&lt;form&gt; + &lt;label&gt; + &lt;input&gt; + &lt;button&gt; + &lt;select&gt; +
-						&lt;datalist&gt; + &lt;optgroup&gt; + &lt;option&gt; + &lt;textarea&gt; +
-						&lt;fieldset&gt; + &lt;legend&gt;</code
-					>:
+					<code>&lt;form&gt; + &lt;label&gt; + &lt;input&gt; + &lt;button&gt; + &lt;select&gt; + &lt;datalist&gt; + &lt;optgroup&gt; + &lt;option&gt; + &lt;textarea&gt; + &lt;fieldset&gt; + &lt;legend&gt;</code>:
 				</h3>
 			</header>
 
@@ -914,22 +834,12 @@ background: aliceblue;
 					</p>
 					<p>
 						<label for="input-text-readonly">
-							Text (readonly): <input
-								type="text"
-								id="input-text-readonly"
-								value="You can't change this"
-								readonly
-							/>
+							Text (readonly): <input type="text" id="input-text-readonly" value="You can't change this" readonly />
 						</label>
 					</p>
 					<p>
 						<label for="input-text-disabled">
-							Text (disabled): <input
-								type="text"
-								id="input-text-disabled"
-								value="This is not available"
-								disabled
-							/>
+							Text (disabled): <input type="text" id="input-text-disabled" value="This is not available" disabled />
 						</label>
 					</p>
 					<p>
@@ -1005,12 +915,7 @@ background: aliceblue;
 							Checkbox 2: <input type="checkbox" id="input-checkbox-2" name="checkbox" />
 						</label>
 						<label for="input-checkbox-3">
-							Checkbox 3 (disabled): <input
-								type="checkbox"
-								id="input-checkbox-3"
-								name="checkbox"
-								disabled
-							/>
+							Checkbox 3 (disabled): <input type="checkbox" id="input-checkbox-3" name="checkbox" disabled />
 						</label>
 					</p>
 					<p>
@@ -1075,16 +980,12 @@ background: aliceblue;
 						<label for="datalist">
 							Datalist:
 							<input name="datalist" list="datalist" />
-							<datalist id="datalist">
-								<option value="Option 1" /><option value="Option 2" /><option
-									value="Option 3"
-								/><option value="Option 4" /></datalist
-							>
+							<datalist id="datalist"> <option value="Option 1"></option><option value="Option 2"></option><option value="Option 3"></option><option value="Option 4"></option></datalist>
 						</label>
 					</p>
 					<p>
 						<label for="textarea">
-							Textarea: <textarea name="textarea" id="textarea" />
+							Textarea: <textarea name="textarea" id="textarea"></textarea>
 						</label>
 					</p>
 					<p>
@@ -1104,11 +1005,7 @@ background: aliceblue;
 					</p>
 					<p>
 						<label for="input-image">
-							Image button: <input
-								type="image"
-								id="input-image"
-								src="https://dummyimage.com/120x60/000/fff"
-							/>
+							Image button: <input type="image" id="input-image" src="https://dummyimage.com/120x60/000/fff" />
 						</label>
 					</p>
 					<p>
@@ -1118,11 +1015,7 @@ background: aliceblue;
 					</p>
 					<p>
 						<label for="input-button">
-							Button: <input
-								type="button"
-								id="input-button"
-								value="I'm an input with type=button"
-							/>
+							Button: <input type="button" id="input-button" value="I'm an input with type=button" />
 						</label>
 					</p>
 					<p>
@@ -1142,7 +1035,7 @@ background: aliceblue;
 					<legend>Testing the <code>&lt;output&gt;</code> element</legend>
 					<input name="a" type="number" step="any" /> +
 					<input name="b" type="number" step="any" /> =
-					<output name="o" for="a b" />
+					<output name="o" for="a b"></output>
 					<p>Code is taken from <a href="" target="_blank">this example by W3</a>.</p>
 				</fieldset>
 			</form>
@@ -1163,28 +1056,17 @@ background: aliceblue;
 					</p>
 					<p>
 						<label for="meter-2">
-							Meter (ok): <meter id="meter-2" max="100" low="30" high="80" optimum="50" value="50"
-								>50/100</meter
-							>
+							Meter (ok): <meter id="meter-2" max="100" low="30" high="80" optimum="50" value="50">50/100</meter>
 						</label>
 					</p>
 					<p>
 						<label for="meter-1">
-							Meter (warning): <meter
-								id="meter-1"
-								max="100"
-								low="30"
-								high="80"
-								optimum="50"
-								value="20">20/100</meter
-							>
+							Meter (warning): <meter id="meter-1" max="100" low="30" high="80" optimum="50" value="20">20/100</meter>
 						</label>
 					</p>
 					<p>
 						<label for="meter-3">
-							Meter (critical): <meter id="meter-3" max="100" low="60" high="70" value="90"
-								>80/100</meter
-							>
+							Meter (critical): <meter id="meter-3" max="100" low="60" high="70" value="90">80/100</meter>
 						</label>
 					</p>
 				</fieldset>
@@ -1223,8 +1105,7 @@ background: aliceblue;
 
 			<dialog>
 				<p>
-					This text is inside a <code>&lt;dialog&gt;</code> box! It should be hidden by default, and
-					shown to the user when given an <code>open</code> attribute.
+					This text is inside a <code>&lt;dialog&gt;</code> box! It should be hidden by default, and shown to the user when given an <code>open</code> attribute.
 				</p>
 			</dialog>
 		</article>
@@ -1269,8 +1150,7 @@ background: aliceblue;
 			</header>
 
 			<p>
-				Below this paragraph, there's a <code>&lt;template&gt;</code> element containing a HTML declaration,
-				that can be used by scripts.
+				Below this paragraph, there's a <code>&lt;template&gt;</code> element containing a HTML declaration, that can be used by scripts.
 			</p>
 			<template>
 				<p>Hi! I'm a paragraph inside the <code>&lt;template&gt;</code> element.</p>
@@ -1286,9 +1166,7 @@ background: aliceblue;
 				A <code>&lt;script&gt;</code> is used to draw a rectangle in the <code>&lt;canvas&gt;</code>
 				below.
 			</p>
-			<canvas id="canvas">
-				Alternative text explaining what's on display in this &lt;canvas&gt;.
-			</canvas>
+			<canvas id="canvas"> Alternative text explaining what's on display in this &lt;canvas&gt;. </canvas>
 			<script>
 				var canvas = document.getElementById('canvas');
 				var ctx = canvas.getContext('2d');
@@ -1305,10 +1183,7 @@ background: aliceblue;
 
 <aside id="aside">
 	<h2>About this project</h2>
-	<p>
-		A test page containing most of the HTML5 elements that you'll ever need. Useful for testing CSS
-		resets or CSS frameworks.
-	</p>
+	<p>A test page containing most of the HTML5 elements that you'll ever need. Useful for testing CSS resets or CSS frameworks.</p>
 	<p>This section is inside an <code>&lt;aside&gt;</code> element.</p>
 </aside>
 

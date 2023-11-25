@@ -6,7 +6,7 @@
 
 <main>
 	<section id="main-center">
-		<Article data={data.article} />
+		<Article data="{data.article}" />
 	</section>
 </main>
 

@@ -16,10 +16,11 @@
 	{#each pages as page}
 		<a href="/{page}">{page === '' ? 'home' : page}</a>
 	{/each}
-	<div class="nav-right" />
+	<div class="nav-right"></div>
 </nav>
-
-<slot />
+<main>
+	<slot />
+</main>
 
 <style>
 	nav {

@@ -45,7 +45,7 @@
 		<h1>{data.title}</h1>
 		<span title="last update: {formatDate(data.updated_at)}">{formatDate(data.uploaded_at)}</span>
 		<span>{data.author.join(', ')}</span>
-		<img src={data.thumbnail} alt="thumbnail" />
+		<img src="{data.thumbnail}" alt="thumbnail" />
 		{@html htmlString}
 	</article>
 	<ul id="table-of-content">

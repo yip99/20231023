@@ -1,8 +1,12 @@
 <script>
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 	export let data;
 	let fuse;
-	onMount(() => {});
+	let query = '';
+	let filteredTags = [...data.tags.map((tag) => tag.name)];
+	let searchResult;
+	let timer;
+	// onMount(() => {});
 	function formatDate(timestamp) {
 		let date = new Date(timestamp);
 		let output = '';
@@ -14,20 +18,18 @@
 		// output += `${date.getSeconds()}`.padStart(2, '0');
 		return output;
 	}
-	let searchResult;
-	let timer;
-	async function search({ target: { value } }) {
+	async function search() {
 		clearTimeout(timer);
-		if (value === '') {
-			searchResult = undefined;
-			return;
-		}
+		// if (value === '') {
+		// 	searchResult = undefined;
+		// 	return;
+		// }
 		await new Promise((resolve, reject) => {
 			timer = setTimeout(async () => {
-				let response = await fetch(`./api?query=${value}`);
+				let response = await fetch(`/api?${new URLSearchParams({query,tag:JSON.stringify(filteredTags)}).toString()}`);
 				searchResult = await response.json();
-				resolve();
-			}, 300);
+                resolve();
+			}, 0);
 		});
 		console.log(searchResult.articles);
 
@@ -42,7 +44,7 @@
 			// ignoreLocation: true,
 			useExtendedSearch: true
 		});
-		let fuseResult = fuse.search(`'${value}`);
+		let fuseResult = fuse.search(`'"${query}"`);
 		for (let i = 0; i < fuseResult.length; i++) {
 			let index = fuseResult[i].refIndex;
 			for (let j = 0; j < fuseResult[i].matches.length; j++) {
@@ -57,67 +59,114 @@
 	function highlight(text, start, end) {
 		return text.slice(0, start) + '<mark>' + text.slice(start, end) + '</mark>' + text.slice(end);
 	}
+	function allTagsToggle({ target: { value } }) {
+		if (value === 'all') {
+			filteredTags = [...data.tags.map((tag) => tag.name)];
+			// search();
+		}
+		if (value === 'none') {
+			filteredTags = [];
+		}
+	}
+	// $: console.log(query);
+	// $: console.log(filteredTags);
+	// $: if (query || filteredTags) {
+	// 	search();
+	// };
 </script>
 
 <svelte:head>
 	<title>Index</title>
 </svelte:head>
 
-<main>
-	<section id="main-center">
-		<div id="search">
-			<div><span>Search:</span><input type="text" placeholder="" id="input-search" on:input={search} /></div>
-			<div><span>Tag:</span><input type="text" placeholder="" id="input-tag" /></div>
+<section id="main-center">
+	<div id="search">
+		<div><span>Search:</span><input type="text" placeholder="" id="input-search" bind:value={query} on:input={search} /></div>
+		<!-- <div><span>Tag:</span><input type="text" placeholder="" id="input-tag" /></div> -->
+		<div class="filter">
+			<div class="filter-all-toggle">
+				<p>Tags</p>
+				<label id="label-tag-all">
+					<!-- All({data.tags.reduce((n, { count }) => n + count, 0)})s -->
+					All({Object.keys(data.tags).length})
+					<input
+						type="text"
+						value="all"
+						on:click={allTagsToggle}
+						on:click={(event) => {
+							allTagsToggle(event);
+							search();
+						}}
+						hidden
+					/>
+				</label>
+				<label id="label-tag-none">
+					None
+					<input
+						type="text"
+						value="none"
+						on:click={allTagsToggle}
+						on:click={(event) => {
+							allTagsToggle(event);
+							search();
+						}}
+						hidden
+					/>
+				</label>
+			</div>
+			<div class="filter-tags">
+				{#each data.tags as tag}
+					<label id="label-tag-{data.tags}">
+						{tag.name}({tag.count})
+						<input type="checkbox" name="checkboxTag" value={tag.name} bind:group={filteredTags} on:change={search} hidden />
+					</label>
+				{/each}
+			</div>
 		</div>
-		<table id="articles">
-			<!-- <tr> -->
-			<!-- <th name="title">Title</th> -->
-			<!-- <th name="author">Author</th> -->
-			<!-- <th name="uploaded-at">Uploaded at</th> -->
-			<!-- </tr> -->
-			{#if searchResult?.articles}
-				{#each searchResult.articles as article}
-					<tr>
-						<td name="title" title={article.title}><a href="/article/{article.slug}">{@html article.title}</a></td>
-						<!-- <td name="author" title={article.author?.join(', ')}>{article.author?.join(', ')}</td> -->
-						<td name="tag">
-							{#each article.tag as tag}
-								<a href="#">{tag}</a>
-							{/each}
-						</td>
-						<td name="uploaded-at">{formatDate(article.uploaded_at)}</td>
-					</tr>
-					<tr class="matched">
-                        {#if /<mark>.+<\/mark>/.test(article.search_content)}
-                            <td colspan="3" class="matched">
-                                {#each article.search_content.split('\n') as search_content_line}
-                                    {#if /<mark>.+<\/mark>/.test(search_content_line)}
-        						      {@html search_content_line}<br>
-                                    {/if}
-                                {/each}
-                            </td>
-                        {/if}
-					</tr>
-				{/each}
-			{:else}
-				{#each data.articles as article}
-					<tr>
-						<td name="title" title={article.title}><a href="/article/{article.slug}">{article.title}</a></td>
-						<!-- <td name="author" title={article.author?.join(', ')}>{article.author?.join(', ')}</td> -->
-						<td name="tag">
-							{#each article.tag as tag}
-								<a href="#">{tag}</a>
-							{/each}
-						</td>
-						<td name="uploaded-at">{formatDate(article.uploaded_at)}</td>
-					</tr>
-				{/each}
+	</div>
+	<table id="articles">
+		<!-- <tr> -->
+		<!-- <th name="title">Title</th> -->
+		<!-- <th name="author">Author</th> -->
+		<!-- <th name="uploaded-at">Uploaded at</th> -->
+		<!-- </tr> -->
+		{#each searchResult?.articles || data?.articles as article}
+			<tr>
+				<td name="title" title={article.title}>
+					<a href="/article/{article.slug}">{@html article.title}</a>
+					<div name="tags">
+						{#each article.tag as tag}
+							<span name="tag" title={tag}>{tag}</span>
+						{/each}
+					</div>
+				</td>
+				<!-- <td name="author" title={article.author?.join(', ')}>{article.author?.join(', ')}</td> -->
+				<!-- <td name="tag">
+{#each article.tag as tag}
+<span title={tag}>{tag}</span>
+{/each}
+</td> -->
+				<td name="uploaded-at">{formatDate(article.uploaded_at)}</td>
+			</tr>
+			{#if /<mark>.+<\/mark>/.test(article.search_content)}
+				<tr class="matched">
+					<td colspan="3" class="matched">
+						{#each article.search_content.split('\n') as search_content_line}
+							{#if /<mark>.+<\/mark>/.test(search_content_line)}
+								{@html search_content_line}<br />
+							{/if}
+						{/each}
+					</td>
+				</tr>
 			{/if}
-		</table>
-	</section>
-</main>
+		{/each}
+	</table>
+</section>
 
 <style>
+	#main-center {
+		width: var(--max-width);
+	}
 	input {
 		background-color: var(--color-bg);
 		border: 0;
@@ -126,8 +175,21 @@
 	#search > div {
 		display: flex;
 	}
-	#search > div > span {
-		width: 5em;
+	.filter {
+		/* flex-wrap: wrap; */
+		gap: 1em;
+	}
+	.filter label {
+		font-weight: 400;
+	}
+	.filter-tags {
+		flex-wrap: wrap;
+		display: flex;
+		gap: 0 1em;
+	}
+
+	label[id^='label-tag-']:has(:checked) {
+		color: var(--color-blossom);
 	}
 	#search > div > input {
 		width: 100%;
@@ -142,7 +204,7 @@
 		border-bottom: 1px solid var(--color-bg-alt);
 	}
 	table {
-		table-layout: fixed;
+		/* table-layout: fixed; */
 	}
 	table *:not(.matched) {
 		text-overflow: ellipsis;
@@ -152,8 +214,12 @@
 	table [name='uploaded-at'] {
 		width: 15%;
 	}
-	[name='tag'] {
-		display: flex;
-		gap: 0.5em;
+	[name='tags'] {
+		/* display: flex; */
+		/* gap: 0.5em; */
+	}
+	span[name='tag']:not(:last-child):after {
+		content: ', ';
+		white-space: pre;
 	}
 </style>

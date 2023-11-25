@@ -133,15 +133,15 @@
 	<section id="main-center">
 		<input type="text" id="input-search" />
 		<!-- <article id="markdown-render" /> -->
-		<Article data={md5}/>
+		<Article data="{md5}" />
 	</section>
-	<section id="main-right" />
+	<section id="main-right"></section>
 </main>
 
 <style>
 	main {
 		display: flex;
-        /* width: var(--max-width); */
+		/* width: var(--max-width); */
 	}
 
 	/* :global(#table-of-contents) {
