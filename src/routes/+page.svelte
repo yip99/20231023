@@ -89,29 +89,11 @@
 				<label id="label-tag-all">
 					<!-- All({data.tags.reduce((n, { count }) => n + count, 0)})s -->
 					All({Object.keys(data.tags).length})
-					<input
-						type="text"
-						value="all"
-						on:click={allTagsToggle}
-						on:click={(event) => {
-							allTagsToggle(event);
-							search();
-						}}
-						hidden
-					/>
+					<input type="text" value="all" on:click={(event) => { allTagsToggle(event); search(); }} hidden />
 				</label>
 				<label id="label-tag-none">
-					None
-					<input
-						type="text"
-						value="none"
-						on:click={allTagsToggle}
-						on:click={(event) => {
-							allTagsToggle(event);
-							search();
-						}}
-						hidden
-					/>
+					None 
+                    <input type="text" value="none" on:click={(event) => { allTagsToggle(event); search(); }} hidden />
 				</label>
 			</div>
 			<div class="filter-tags">
@@ -213,10 +195,6 @@
 	}
 	table [name='uploaded-at'] {
 		width: 15%;
-	}
-	[name='tags'] {
-		/* display: flex; */
-		/* gap: 0.5em; */
 	}
 	span[name='tag']:not(:last-child):after {
 		content: ', ';
