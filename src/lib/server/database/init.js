@@ -1,17 +1,17 @@
-import { dbRun, newArticle } from '.';
+import { dbRun, newArticle, signup, newComment } from '.';
 
 export const init = async () => {
-	// for (let statement of initQuery) {
-	await dbRun(initQuery);
-	// }
-	console.log('created table');
-	await newArticle(
-		...[
-			'HTML elements',
-			'0',
-			'public',
-			'https://dummyimage.com/1920x1080/000/fff',
-			`## This is a H2 Heading
+    // for (let statement of initQuery) {
+    await dbRun(initQuery);
+    // }
+    console.log('created table');
+    await newArticle(
+        ...[
+            'HTML elements',
+            '0',
+            'public',
+            'https://dummyimage.com/1920x1080/000/fff',
+            `## This is a H2 Heading
 
 ### This is a H3 Heading
 
@@ -140,7 +140,7 @@ Image in the aliased assets folder: \`https://dummyimage.com/512x512/000/fff\`
 ## Links
 
 [Content from markdown-it](https://markdown-it.github.io/)`,
-			`This is a H2 Heading
+            `This is a H2 Heading
 This is a H3 Heading
 This is a H4 Heading
 This is a H5 Heading
@@ -238,17 +238,17 @@ A cartoon cactus looking at the Astro.build logo
 
 Links
 Content from markdown-it`,
-			['test', 'tag1', 'TAG2'],
-			['author1', 'AUTHOR2']
-		]
-	);
-	await newArticle(
-		...[
-			'Creating a SvelteKit project',
-			'1',
-			'public',
-			'https://dummyimage.com/1920x1080/000/fff',
-			`# create-svelte
+            ['test', 'tag1', 'TAG2'],
+            ['author1', 'AUTHOR2']
+        ]
+    );
+    await newArticle(
+        ...[
+            'Creating a SvelteKit project',
+            '1',
+            'public',
+            'https://dummyimage.com/1920x1080/000/fff',
+            `# create-svelte
 
 Everything you need to build a Svelte project, powered by [\`create-svelte\`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
@@ -286,7 +286,7 @@ npm run build
 You can preview the production build with \`npm run preview\`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.`,
-			`create-svelte
+            `create-svelte
 Everything you need to build a Svelte project, powered by create-svelte.
 
 Creating a project
@@ -311,18 +311,18 @@ npm run build
 You can preview the production build with npm run preview.
 
 To deploy your app, you may need to install an adapter for your target environment.`,
-			['framework'],
-			['sveltejs']
-		]
-	);
-	console.log('init 1');
-	await newArticle(
-		...[
-			'SQLite Node.js',
-			'2',
-			'public',
-			'https://dummyimage.com/600x400/000/fff',
-			`# ⚙️ node-sqlite3
+            ['framework'],
+            ['sveltejs']
+        ]
+    );
+    console.log('init 1');
+    await newArticle(
+        ...[
+            'SQLite Node.js',
+            '2',
+            'public',
+            'https://dummyimage.com/600x400/000/fff',
+            `# ⚙️ node-sqlite3
 
 Asynchronous, non-blocking [SQLite3](https://sqlite.org/) bindings for [Node.js](http://nodejs.org/).
 
@@ -583,7 +583,7 @@ We use [GitHub releases](https://github.com/TryGhost/node-sqlite3/releases) for 
 \`node-sqlite3\` is [BSD licensed](https://github.com/tryghost/node-sqlite3/raw/master/LICENSE).
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fmapbox%2Fnode-sqlite3.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fmapbox%2Fnode-sqlite3?ref=badge_large)`,
-			`⚙️ node-sqlite3
+            `⚙️ node-sqlite3
 Asynchronous, non-blocking SQLite3 bindings for Node.js.
 
 Latest release
@@ -778,35 +778,59 @@ We use GitHub releases for notes on the latest versions. See CHANGELOG.md in git
 
 License
 node-sqlite3 is BSD licensed.`,
-			['database'],
-			['TryGhost']
-		]
-	);
-	await newArticle(...[`!@#$%^&*()_+-=[];',./{}:"<>?.\`~\\`, '4', 'public', 'https://dummyimage.com/1920x1080/000/fff', `!@#$%^&*()_+-=[];',./{}:"<>?.\`~\\`, `!@#$%^&*()_+-=[];',./{}:"<>?.\`~\\`, ['test', 'tag1', 'TAG2', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8'], ['author1', 'AUTHOR2']]);
-	await newArticle(...[`Article title`, '5', 'public', 'https://dummyimage.com/1920x1080/000/fff', `article content`, `article content for search`, ['test', 'Just Chatting', 'League of Legends', 'Apex Legends'], ['author1', 'AUTHOR2']]);
-	// await dbRun([`select tag.id
-	//     from tag
-	//     where tag.name in ('database')`]);
-	// await dbRun([`select article_tag.article_id
-	//     from article_tag
-	//     where article_tag.tag_id in (select tag.id
-	//     from tag
-	//     where tag.name in ('database'))`]);
-	// await dbRun([`SELECT title from article where article.id in(select article_tag.article_id
-	//     from article_tag
-	//     where article_tag.tag_id in (select tag.id
-	//     from tag
-	//     where tag.name in ('database')))`]);
-	console.log('init 2');
+            ['database'],
+            ['TryGhost']
+        ]
+    );
+    await newArticle(...[`!@#$%^&*()_+-=[];',./{}:"<>?.\`~\\`, '4', 'public', 'https://dummyimage.com/1920x1080/000/fff', `!@#$%^&*()_+-=[];',./{}:"<>?.\`~\\`, `!@#$%^&*()_+-=[];',./{}:"<>?.\`~\\`, ['test', 'tag1', 'TAG2', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8'], ['author1', 'AUTHOR2']]);
+    await newArticle(...[`Article title`, '5', 'public', 'https://dummyimage.com/1920x1080/000/fff', `article content`, `article content for search`, ['test', 'Just Chatting', 'League of Legends', 'Apex Legends'], ['author1', 'AUTHOR2']]);
+    // await dbRun([`select tag.id
+    //     from tag
+    //     where tag.name in ('database')`]);
+    // await dbRun([`select article_tag.article_id
+    //     from article_tag
+    //     where article_tag.tag_id in (select tag.id
+    //     from tag
+    //     where tag.name in ('database'))`]);
+    // await dbRun([`SELECT title from article where article.id in(select article_tag.article_id
+    //     from article_tag
+    //     where article_tag.tag_id in (select tag.id
+    //     from tag
+    //     where tag.name in ('database')))`]);
+    await newComment({
+        articleId: 4,
+        userId: 1,
+        content: 'comment 1',
+        createdAt: Date.now(),
+    });
+    await newComment({
+        articleId: 4,
+        userId: 1,
+        content: 'comment 2',
+        createdAt: Date.now(),
+    });
+    await newComment({
+        articleId: 4,
+        userId: 1,
+        content: 'comment 3',
+        createdAt: Date.now(),
+    });
+    await signup({
+        username: 'user 1',
+        hash: '123'
+    });
+    console.log('init 2');
 };
 
 const initQuery = [
-	'DROP TABLE IF EXISTS article_author',
-	'DROP TABLE IF EXISTS article_tag',
-	'DROP TABLE IF EXISTS author',
-	'DROP TABLE IF EXISTS tag',
-	'DROP TABLE IF EXISTS article',
-	`CREATE TABLE article (
+    'DROP TABLE IF EXISTS article_author',
+    'DROP TABLE IF EXISTS article_tag',
+    'DROP TABLE IF EXISTS author',
+    'DROP TABLE IF EXISTS tag',
+    'DROP TABLE IF EXISTS article',
+    'DROP TABLE IF EXISTS user',
+    'DROP TABLE IF EXISTS comment',
+    `CREATE TABLE article (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
     slug TEXT UNIQUE,
@@ -818,123 +842,143 @@ const initQuery = [
     uploaded_at INTEGER,
     updated_at INTEGER
     );`,
-	// `CREATE TABLE type (
-	// id INTEGER PRIMARY KEY AUTOINCREMENT,
-	// name TEXT UNIQUE
-	// );`,
-	// `CREATE TABLE article_type (
-	// article_id INTEGER,
-	// type_id INTEGER,
-	// FOREIGN KEY(article_id) REFERENCES article(id),
-	// FOREIGN KEY(type_id) REFERENCES type(id)
-	// );`,
-	// `CREATE TABLE category (
-	// id INTEGER PRIMARY KEY AUTOINCREMENT,
-	// name TEXT UNIQUE
-	// );`,
-	// `CREATE TABLE article_category (
-	// article_id INTEGER,
-	// category_id INTEGER,
-	// FOREIGN KEY(article_id) REFERENCES article(id),
-	// FOREIGN KEY(category_id) REFERENCES category(id)
-	// );`,
-	`CREATE TABLE tag (
+    // `CREATE TABLE type (
+    // id INTEGER PRIMARY KEY AUTOINCREMENT,
+    // name TEXT UNIQUE
+    // );`,
+    // `CREATE TABLE article_type (
+    // article_id INTEGER,
+    // type_id INTEGER,
+    // FOREIGN KEY(article_id) REFERENCES article(id),
+    // FOREIGN KEY(type_id) REFERENCES type(id)
+    // );`,
+    // `CREATE TABLE category (
+    // id INTEGER PRIMARY KEY AUTOINCREMENT,
+    // name TEXT UNIQUE
+    // );`,
+    // `CREATE TABLE article_category (
+    // article_id INTEGER,
+    // category_id INTEGER,
+    // FOREIGN KEY(article_id) REFERENCES article(id),
+    // FOREIGN KEY(category_id) REFERENCES category(id)
+    // );`,
+    `CREATE TABLE tag (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE
     );`,
-	`CREATE TABLE article_tag (
+    `CREATE TABLE article_tag (
     article_id INTEGER,
     tag_id INTEGER,
     FOREIGN KEY(article_id) REFERENCES article(id),
     FOREIGN KEY(tag_id) REFERENCES tag(id)
     );`,
-	`CREATE TABLE author (
+    `CREATE TABLE author (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE
     );`,
-	`CREATE TABLE article_author (
+    `CREATE TABLE article_author (
     article_id INTEGER,
     author_id INTEGER,
     FOREIGN KEY(article_id) REFERENCES article(id),
     FOREIGN KEY(author_id) REFERENCES author(id)
     );`,
-	`CREATE VIRTUAL TABLE article_fts USING fts5 (
-        title,
-        summary,
-        search_content,
-        content=article
+    `CREATE TABLE user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        hash TEXT
     );`,
-	`CREATE TRIGGER article_fts_insert AFTER INSERT ON article
-    BEGIN
-        INSERT INTO article_fts (rowid, title, summary, search_content) VALUES (new.rowid, new.title, new.summary, new.search_content);
-    END;
-    
-    CREATE TRIGGER article_fts_delete AFTER DELETE ON article
-    BEGIN
-        INSERT INTO article_fts (article_fts, rowid, title, summary, search_content) VALUES ('delete', old.rowid, old.title, old.summary, old.search_content);
-    END;
-    
-    CREATE TRIGGER article_fts_update AFTER UPDATE ON article
-    BEGIN
-        INSERT INTO article_fts (article_fts, rowid, title, summary, search_content) VALUES ('delete', old.rowid, old.title, old.summary, old.search_content);
-        INSERT INTO article_fts (rowid, title, summary, search_content) VALUES (new.rowid, new.title, new.summary, new.search_content);
-    END;`
-	// `INSERT INTO article (title,slug,status,summary,thumbnail,content,uploaded_at) VALUES (
-	//   'Superconductor',
-	//   'slug_0',
-	//   'public',
-	//   'summary_0',
-	//   'https://upload.wikimedia.org/wikipedia/commons/0/05/LK-99_pellet.png',
-	//   '> 1. Dramatically improved energy efficiency - Superconductors have zero electrical resistance, so energy could be transported without losses. This could revolutionize power grids, electronics, transportation, etc.
-	// > 2. Faster computing - Superconducting materials can transmit information with no resistance or heat production, enabling faster computer processors. Quantum computing may also benefit.
-	// > 3. More powerful magnets - Superconducting magnets are used in MRI machines, maglev trains, particle accelerators and fusion energy research. More powerful and cheaper magnets could be produced.
-	// > 4. Lossless power transmission - Electrical power could be transmitted over long distances with no energy lost as heat. This could enable better power transmission efficiency.
-	// > 5. Higher magnetic field strengths - Stronger magnetic fields could be created for applications in physics, materials science, imaging, etc. Fields are limited today partly due to superconductor limitations.
-	// > 6. Compact particle accelerators - Higher magnetic fields would allow for more compact particle accelerators for physics research.
-	// > 7. Cheaper medical imaging - MRI scanners and other imaging devices would become cheaper and more widespread if superconducting magnets were cheaper.
-	// > 8. Quieter transportation - Maglev trains and electric ship propulsion could become more widespread without resistive losses.
-	//
-	// [Bilibili user was able to get results that are consistent with the original paper about LK99 : r/singularity (reddit.com)](https://www.reddit.com/r/singularity/comments/15efhvy/comment/ju7nx19/)',
-	//   '1692282361000'
-	// );`,
-	// `INSERT INTO article (title,slug,status,summary,thumbnail,content,uploaded_at) VALUES (
-	//   'Showmaker explains K’Sante',
-	//   'slug_1',
-	//   'public',
-	//   'summary_1',
-	//   'https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg',
-	//   '> 체력 4700 방어력 329 마저201 인 챔피언👤이 저지불가🚫, 쉴드🛡, 벽🧱 넘기는 거 있고요. 에어본🌪 있고, 심지어 쿨타임은 1️⃣초밖에 안되고 마나🧙‍♂️는 1️⃣5️⃣ 들고 w는 심지어 변신💫하면 쿨 초기화에다가 패시브는 고정피해🗡가 들어가며 그 다음에 방마저🥋 올리면📈 올릴수록📈 스킬 가속⏰이 생기고! q에 스킬가속⏰이 생기고 스킬 속도🚀가 빨라지고📈 그 다음에 공격력🗡 계수가 있어가지고 W가 그 이익-으아아아악😱😱
-	//
-	// > 4700 HP, 329 armor, 201 MR champion👤 has unstoppable🚫, shield 🛡, wall🧱 hopping abilities. Has an airborne 🌪, furthermore the cooldown is only 1️⃣ second mana🧙‍♂️ cost is 1️⃣5️⃣ then when he transforms 💫 w cooldown is refunded and passive deals true damage 🗡 and then for armor/mr 🥋 the more 📈 and more 📈 you stack, you get cdr ⏰! you get cdr⏰ on your q and the casting speed 🚀 gets faster 📈 and then he has an AD 🗡 ratio so his W is eek-AAAAAAAAAAAAAAAAAAAA😱😱
-	//
-	// > 你說得對，但是這就是卡桑帝，🤔HP 4700，護甲 329，魔抗 201的英雄。有不可阻擋🤚，有護盾👌，還能過牆✌️。有控制🤙，甚至冷卻時間只有1秒✊，只要15點藍👍。轉換姿態時甚至可以刷新W的cd👈，還有✌️真實傷害。然後，護甲和魔抗提升後還能獲得技能加速👐，縮短Q的cd🙌，還縮短釋放時間😨，然後還有攻擊力😰。W就👊🏿😭👊🏿啊啊啊啊啊啊🖐️😭🤚
-	//
-	// > 汝言是，則奎桑提，壽命長達四千七百餘，甲胄三百二十九，戲法抵抗二百有一。有不可禦，有護盾，猶能過牆。有製者，極則冷日止一秒，但十五點藍耳。轉勢相傾，更有甚者則為w武技之煥然一新，猶得其技速，縮十八丈餘，乃縮其積而釋之，則或擊其力，則有矣矣矣矣矣
-	//
-	// > 你講得啱，呢個就係卡桑帝，🤔四千七百血，329物防，201魔防嘅英雄，有霸體✋，有盾👌，仲可以穿牆✌️。有CC🤙，甚至CD得1秒✊，只要15魔👍。轉Mode仲可以重置W嘅CD👈，仲有✌️真傷。然後，加左雙防之後仲有技能加速👐，減Q嘅CD🙌，放技仲快左😨，跟住仲有攻擊力😰，W就👊🏿😭👊🏿啊啊啊啊啊啊啊啊啊啊✋😭🤚',
-	//   '1692282361000'
-	// );`,
-	// `INSERT INTO type (name) VALUES ('Article');`,
-	// `INSERT INTO category (name) VALUES ('Academic');`,
-	// `INSERT INTO category (name) VALUES ('Game');`,
-	// `INSERT INTO tag (name) VALUES ('Science');`,
-	// `INSERT INTO tag (name) VALUES ('Game');`,
-	// `INSERT INTO tag (name) VALUES ('League of Legends');`,
-	// `INSERT INTO author (name) VALUES ('Scientist A');`,
-	// `INSERT INTO author (name) VALUES ('Viewer A');`,
-	// `INSERT INTO author (name) VALUES ('Viewer B');`,
-	// `INSERT INTO author (name) VALUES ('Viewer C');`,
-	// `INSERT INTO author (name) VALUES ('Author B');`,
-	// `INSERT INTO author (name) VALUES ('Author C');`,
-	// `INSERT INTO article_type (article_id, type_id) VALUES (1, 1);`,
-	// `INSERT INTO article_type (article_id, type_id) VALUES (2, 1);`,
-	// `INSERT INTO article_category (article_id, category_id) VALUES (1, 1);`,
-	// `INSERT INTO article_category (article_id, category_id) VALUES (2, 2);`,
-	// `INSERT INTO article_tag (article_id, tag_id) VALUES (1, 1);`,
-	// `INSERT INTO article_tag (article_id, tag_id) VALUES (2, 2);`,
-	// `INSERT INTO article_tag (article_id, tag_id) VALUES (2, 3);`,
-	// `INSERT INTO article_author (article_id, author_id) VALUES (1, 1);`,
-	// `INSERT INTO article_author (article_id, author_id) VALUES (2, 2);`,
-	// `INSERT INTO article_author (article_id, author_id) VALUES (2, 3);`,
-	// `INSERT INTO article_author (article_id, author_id) VALUES (2, 4);`
+    `CREATE TABLE comment (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        article_id INTEGER,
+        user_id INTEGER,
+        content TEXT,
+        created_at INTEGER,
+        FOREIGN KEY(article_id) REFERENCES article(id),
+        FOREIGN KEY(user_id) REFERENCES user(id)
+    );`,
+    // `CREATE TABLE article_comment (
+    //     article_id INTEGER,
+    //     comment_id INTEGER,
+    //     FOREIGN KEY(article_id) REFERENCES article(id),
+    //     FOREIGN KEY(comment_id) REFERENCES comment(id)
+    //     );`
+    // `CREATE VIRTUAL TABLE article_fts USING fts5 (
+    //     title,
+    //     summary,
+    //     search_content,
+    //     content=article
+    // );`,
+    // `CREATE TRIGGER article_fts_insert AFTER INSERT ON article
+    // BEGIN
+    //     INSERT INTO article_fts (rowid, title, summary, search_content) VALUES (new.rowid, new.title, new.summary, new.search_content);
+    // END;
+    // 
+    // CREATE TRIGGER article_fts_delete AFTER DELETE ON article
+    // BEGIN
+    //     INSERT INTO article_fts (article_fts, rowid, title, summary, search_content) VALUES ('delete', old.rowid, old.title, old.summary, old.search_content);
+    // END;
+    // 
+    // CREATE TRIGGER article_fts_update AFTER UPDATE ON article
+    // BEGIN
+    //     INSERT INTO article_fts (article_fts, rowid, title, summary, search_content) VALUES ('delete', old.rowid, old.title, old.summary, old.search_content);
+    //     INSERT INTO article_fts (rowid, title, summary, search_content) VALUES (new.rowid, new.title, new.summary, new.search_content);
+    // END;`
+    // `INSERT INTO article (title,slug,status,summary,thumbnail,content,uploaded_at) VALUES (
+    //   'Superconductor',
+    //   'slug_0',
+    //   'public',
+    //   'summary_0',
+    //   'https://upload.wikimedia.org/wikipedia/commons/0/05/LK-99_pellet.png',
+    //   '> 1. Dramatically improved energy efficiency - Superconductors have zero electrical resistance, so energy could be transported without losses. This could revolutionize power grids, electronics, transportation, etc.
+    // > 2. Faster computing - Superconducting materials can transmit information with no resistance or heat production, enabling faster computer processors. Quantum computing may also benefit.
+    // > 3. More powerful magnets - Superconducting magnets are used in MRI machines, maglev trains, particle accelerators and fusion energy research. More powerful and cheaper magnets could be produced.
+    // > 4. Lossless power transmission - Electrical power could be transmitted over long distances with no energy lost as heat. This could enable better power transmission efficiency.
+    // > 5. Higher magnetic field strengths - Stronger magnetic fields could be created for applications in physics, materials science, imaging, etc. Fields are limited today partly due to superconductor limitations.
+    // > 6. Compact particle accelerators - Higher magnetic fields would allow for more compact particle accelerators for physics research.
+    // > 7. Cheaper medical imaging - MRI scanners and other imaging devices would become cheaper and more widespread if superconducting magnets were cheaper.
+    // > 8. Quieter transportation - Maglev trains and electric ship propulsion could become more widespread without resistive losses.
+    //
+    // [Bilibili user was able to get results that are consistent with the original paper about LK99 : r/singularity (reddit.com)](https://www.reddit.com/r/singularity/comments/15efhvy/comment/ju7nx19/)',
+    //   '1692282361000'
+    // );`,
+    // `INSERT INTO article (title,slug,status,summary,thumbnail,content,uploaded_at) VALUES (
+    //   'Showmaker explains K’Sante',
+    //   'slug_1',
+    //   'public',
+    //   'summary_1',
+    //   'https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg',
+    //   '> 체력 4700 방어력 329 마저201 인 챔피언👤이 저지불가🚫, 쉴드🛡, 벽🧱 넘기는 거 있고요. 에어본🌪 있고, 심지어 쿨타임은 1️⃣초밖에 안되고 마나🧙‍♂️는 1️⃣5️⃣ 들고 w는 심지어 변신💫하면 쿨 초기화에다가 패시브는 고정피해🗡가 들어가며 그 다음에 방마저🥋 올리면📈 올릴수록📈 스킬 가속⏰이 생기고! q에 스킬가속⏰이 생기고 스킬 속도🚀가 빨라지고📈 그 다음에 공격력🗡 계수가 있어가지고 W가 그 이익-으아아아악😱😱
+    //
+    // > 4700 HP, 329 armor, 201 MR champion👤 has unstoppable🚫, shield 🛡, wall🧱 hopping abilities. Has an airborne 🌪, furthermore the cooldown is only 1️⃣ second mana🧙‍♂️ cost is 1️⃣5️⃣ then when he transforms 💫 w cooldown is refunded and passive deals true damage 🗡 and then for armor/mr 🥋 the more 📈 and more 📈 you stack, you get cdr ⏰! you get cdr⏰ on your q and the casting speed 🚀 gets faster 📈 and then he has an AD 🗡 ratio so his W is eek-AAAAAAAAAAAAAAAAAAAA😱😱
+    //
+    // > 你說得對，但是這就是卡桑帝，🤔HP 4700，護甲 329，魔抗 201的英雄。有不可阻擋🤚，有護盾👌，還能過牆✌️。有控制🤙，甚至冷卻時間只有1秒✊，只要15點藍👍。轉換姿態時甚至可以刷新W的cd👈，還有✌️真實傷害。然後，護甲和魔抗提升後還能獲得技能加速👐，縮短Q的cd🙌，還縮短釋放時間😨，然後還有攻擊力😰。W就👊🏿😭👊🏿啊啊啊啊啊啊🖐️😭🤚
+    //
+    // > 汝言是，則奎桑提，壽命長達四千七百餘，甲胄三百二十九，戲法抵抗二百有一。有不可禦，有護盾，猶能過牆。有製者，極則冷日止一秒，但十五點藍耳。轉勢相傾，更有甚者則為w武技之煥然一新，猶得其技速，縮十八丈餘，乃縮其積而釋之，則或擊其力，則有矣矣矣矣矣
+    //
+    // > 你講得啱，呢個就係卡桑帝，🤔四千七百血，329物防，201魔防嘅英雄，有霸體✋，有盾👌，仲可以穿牆✌️。有CC🤙，甚至CD得1秒✊，只要15魔👍。轉Mode仲可以重置W嘅CD👈，仲有✌️真傷。然後，加左雙防之後仲有技能加速👐，減Q嘅CD🙌，放技仲快左😨，跟住仲有攻擊力😰，W就👊🏿😭👊🏿啊啊啊啊啊啊啊啊啊啊✋😭🤚',
+    //   '1692282361000'
+    // );`,
+    // `INSERT INTO type (name) VALUES ('Article');`,
+    // `INSERT INTO category (name) VALUES ('Academic');`,
+    // `INSERT INTO category (name) VALUES ('Game');`,
+    // `INSERT INTO tag (name) VALUES ('Science');`,
+    // `INSERT INTO tag (name) VALUES ('Game');`,
+    // `INSERT INTO tag (name) VALUES ('League of Legends');`,
+    // `INSERT INTO author (name) VALUES ('Scientist A');`,
+    // `INSERT INTO author (name) VALUES ('Viewer A');`,
+    // `INSERT INTO author (name) VALUES ('Viewer B');`,
+    // `INSERT INTO author (name) VALUES ('Viewer C');`,
+    // `INSERT INTO author (name) VALUES ('Author B');`,
+    // `INSERT INTO author (name) VALUES ('Author C');`,
+    // `INSERT INTO article_type (article_id, type_id) VALUES (1, 1);`,
+    // `INSERT INTO article_type (article_id, type_id) VALUES (2, 1);`,
+    // `INSERT INTO article_category (article_id, category_id) VALUES (1, 1);`,
+    // `INSERT INTO article_category (article_id, category_id) VALUES (2, 2);`,
+    // `INSERT INTO article_tag (article_id, tag_id) VALUES (1, 1);`,
+    // `INSERT INTO article_tag (article_id, tag_id) VALUES (2, 2);`,
+    // `INSERT INTO article_tag (article_id, tag_id) VALUES (2, 3);`,
+    // `INSERT INTO article_author (article_id, author_id) VALUES (1, 1);`,
+    // `INSERT INTO article_author (article_id, author_id) VALUES (2, 2);`,
+    // `INSERT INTO article_author (article_id, author_id) VALUES (2, 3);`,
+    // `INSERT INTO article_author (article_id, author_id) VALUES (2, 4);`
 ];

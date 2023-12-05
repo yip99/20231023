@@ -1,12 +1,17 @@
 <script>
 	import { onMount } from 'svelte';
 	export let data;
+    export let exp;
 	let md;
 	let headings = [];
 	$: if (data) {
-		headings = [];
+        headings = [];
 	}
-	$: htmlString = md?.render(data.content) ?? 'loading';
+    let htmlString = 'loading';
+    $: if(md) {
+        htmlString = md.render(data.content);
+        exp = stripHtml(htmlString);
+    }
 	onMount(() => {
 		md = window.markdownit({
 			html: true,
@@ -37,25 +42,31 @@
 		// output += `${date.getSeconds()}`.padStart(2, '0');
 		return output;
 	}
+    function stripHtml(html) {
+        let doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.innerText || doc.body.textContent || "";
+    }
 </script>
 
-<div>
-	<article id="article-content">
+<section>
+	<article>
 		<h1>{data.title}</h1>
 		<span title="last update: {formatDate(data.updated_at)}">{formatDate(data.uploaded_at)}</span>
 		<span>{data.author.join(', ')}</span>
-		<img src="{data.thumbnail}" alt="thumbnail" />
-		{@html htmlString}
+        <img src="{data.thumbnail}" onerror="this.src='https://dummyimage.com/1920x1080/000/fff&text=thumbnail'" alt="thumbnail" />
+        <div id="article-content">
+            {@html htmlString}
+        </div>
 	</article>
 	<ul id="table-of-content">
 		{#each headings as id}
 			<li><a href="#{id}">{id}</a></li>
 		{/each}
 	</ul>
-</div>
+</section>
 
 <style>
-	div {
+	section {
 		display: flex;
 		width: var(--max-width);
 		gap: 1em;

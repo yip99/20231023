@@ -1,12 +1,14 @@
 <script>
 	import { onMount } from 'svelte';
 	import Article from '../Article.svelte';
+	import Comment from '../Comment.svelte';
 	export let data;
 </script>
 
 <main>
 	<section id="main-center">
 		<Article data="{data.article}" />
+        <Comment data="{data.comment}" />
 	</section>
 </main>
 

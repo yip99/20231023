@@ -307,5 +307,7 @@ main {
 }
 
 main:has(> #editor) {
+    /* display: flex; */
+    /* min-height: 100%; */
     width: calc(var(--max-width) * 2);
 }

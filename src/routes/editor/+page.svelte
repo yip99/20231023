@@ -5,22 +5,34 @@
         title: '',
         thumbnail: '',
         content: '',
-        uploaded_at: 0,
+        search_content: '',
+        uploaded_at: Date.now(),
         updated_at: 0,
         author: [],
     };
-	onMount(() => {
-		// document.querySelector('#input-editor').addEventListener('input', (event) => {
-		// 	input = event.target.value;
-		//     console.log(input);
-		// });
-	});
+	onMount(() => {});
 </script>
+
 <section id="editor">
-    <div id="input" contenteditable>Try typing and returning.</div>
-    <!-- <section id="input"><textarea id="input-editor" bind:value="{input.content}"></textarea></section> -->
-    <section id="preview"><Article data={input}/></section>
+    <!-- <div id="input" contenteditable>Try typing and returning.</div> -->
+    <section class="textarea"><textarea id="input-content" bind:value="{input.content}"></textarea></section>
+    <section id="preview"><Article data={input} bind:exp="{input.search_content}"/></section>
     <!-- <section id="input-search-content"><textarea id="input-editor" bind:value="{input.content}"></textarea></section> -->
+</section>
+<section>
+    <section class="textarea"><textarea id="input-search-content" bind:value="{input.search_content}"></textarea></section>
+    <section>
+    </section>
+</section>
+<section>
+    <section>
+        <input type="text" name="title" placeholder="title" bind:value="{input.title}"/>
+        <input type="text" name="thumbnail" placeholder="thumbnail" bind:value="{input.thumbnail}"/>
+        <button>submit</button>
+    </section>
+    <section>
+    </section>
+    <!-- <input type="text" name="author" placeholder="author" bind:value="{input.title}"/> -->
 </section>
 
 <style>
@@ -33,23 +45,22 @@
 		box-sizing: border-box;
 		justify-content: center;
 	}
-	div#input,
+	section.textarea,
 	section#preview {
 		width: var(--max-width);
-		height: 100vh;
+		height: 100%;
 	}
-	#input > *,
+	/* #input > *,
 	#preview > * {
 		width: 100%;
 		height: 100%;
 		margin: 0;
-	}
+	} */
     textarea {
         width: 100%;
         height: 100%; 
-        box-sizing: border-box;
     }
-    div {
+    /* div {
         border: 1px solid;
     }
     div:focus-visible {
@@ -58,5 +69,5 @@
 		margin: 0;
         border: 1px solid var(--color-blossom);
         outline: 0;
-    }
+    } */
 </style>
