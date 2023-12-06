@@ -4,29 +4,34 @@
     export let exp;
 	let md;
 	let headings = [];
-	$: if (data) {
-        headings = [];
-	}
-    let htmlString = 'loading';
+	// $: if (data) {
+    //     headings = [];
+	// }
+    let htmlString = data.content;
     $: if(md) {
-        htmlString = md.render(data.content);
+        // htmlString = md.render(data.content);
+        // md.render(data.content);
         exp = stripHtml(htmlString);
     }
 	onMount(() => {
-		md = window.markdownit({
-			html: true,
-			breaks: true
-		});
-		md.use(window.markdownItAnchor, {
-			slugify: (id) => {
-				let txt = document.createElement('textarea');
-				txt.innerHTML = id;
-				return txt.value;
-			},
-			callback: (title, slug) => {
-				headings = [...headings, slug.title];
-			}
-		});
+		// md = window.markdownit({
+		// 	html: true,
+		// 	breaks: true
+		// });
+		// md.use(window.markdownItAnchor, {
+		// 	slugify: (id) => {
+		// 		let txt = document.createElement('textarea');
+		// 		txt.innerHTML = id;
+		// 		return txt.value;
+		// 	},
+		// 	callback: (title, slug) => {
+		// 		headings = [...headings, slug.title];
+		// 	}
+		// });
+        document.querySelectorAll('#article-content > *:is(h1, h2, h3, h4, h5, h6)').forEach(element => {
+            // console.log(element.innerText);
+            headings = [...headings, element.innerText];
+        });
 	});
 	function formatDate(timestamp) {
 		if (!timestamp) {
