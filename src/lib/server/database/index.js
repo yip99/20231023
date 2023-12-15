@@ -1,5 +1,5 @@
 import sqlite3 from 'sqlite3';
-import { initQuery } from '$lib/server/database/init.js';
+import bcrypt from 'bcrypt';
 import { database_path } from '$env/static/private';
 const db = new sqlite3.Database(database_path);
 // const db = new sqlite3.Database(':memory:');
@@ -414,5 +414,41 @@ export function getCommentById(id) {
                 resolve(comment);
             }
         );
+    });
+}
+
+export function login(username, password) {
+    return new Promise((resolve, reject) => {
+        db.serialize(() => {
+            db.get('SELECT * FROM user WHERE username = ?', [username], async (error, user) => {
+                if (error) {
+                    console.log(error);
+                    reject();
+                    return;
+                }
+                if (!user) {
+                    reject();
+                    return;
+                }
+                if (!await bcrypt.compare(password, user.hash)) {
+                    reject();
+                    return;
+                };
+                let sessionId = crypto.randomUUID();
+                db.run('INSERT INTO login_session (user_id, session_id, timestamp) VALUES (?,?,?)', [user.id, sessionId, Date.now()], (error) => {
+                    if (error) {
+                        console.log('insert login_session', error);
+                        reject();
+                        return;
+                    }
+                });
+                resolve({
+                    id: user.id,
+                    username: user.username,
+                    role: user.role,
+                    sessionId
+                });
+            });
+        });
     });
 }

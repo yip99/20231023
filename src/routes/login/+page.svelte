@@ -28,8 +28,9 @@
             errorMessage = (await response.json()).message;
             return;
         }
+        let responseUser = await response.json();
         message = 'login successed';
-        $user = { username: input.username }; // todo
+        $user = responseUser;
         await goto('/');
     }
     async function signup() {

@@ -811,6 +811,7 @@ const initQuery = [
     `CREATE TABLE user (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
+        role TEXT,
         hash TEXT
     );`,
     `CREATE TABLE comment (
@@ -822,6 +823,13 @@ const initQuery = [
         FOREIGN KEY(article_id) REFERENCES article(id),
         FOREIGN KEY(user_id) REFERENCES user(id)
     );`,
+    `CREATE TABLE login_session (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        session_id TEXT UNIQUE,
+        timestamp INTEGER,
+        FOREIGN KEY(user_id) REFERENCES user(id)
+    );`
     // `CREATE TABLE article_comment (
     //     article_id INTEGER,
     //     comment_id INTEGER,
