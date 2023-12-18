@@ -299,7 +299,7 @@ fieldset {
 }
 
 nav {
-    width: var(--max-width);
+    width: calc(var(--max-width) * 1.5);
 }
 
 main {

@@ -20,7 +20,7 @@
         let option = {
             method: "POST",
             body: JSON.stringify(input)
-        }
+        };
         let response = await fetch('/api/login', option);
         errorMessage = '';
         message = '';
@@ -39,7 +39,7 @@
         let option = {
             method: "POST",
             body: JSON.stringify(input)
-        }
+        };
         let response = await fetch('/api/signup', option);
         errorMessage = '';
         message = '';

@@ -2,7 +2,6 @@ import sqlite3 from 'sqlite3';
 import bcrypt from 'bcrypt';
 import { database_path } from '$env/static/private';
 const db = new sqlite3.Database(database_path);
-// const db = new sqlite3.Database(':memory:');
 
 export function getAllPublicArticle() {
     return new Promise((resolve, reject) => {
@@ -188,7 +187,7 @@ export function newArticle(title, slug, status, thumbnail, content, search_conte
     });
 }
 
-export function search({ query, tag, order, skip, count }) {
+export function searchPost({ query, tag, order, skip, count }) {
     console.log({ query, tag });
     query = query
         .split('')
@@ -399,7 +398,7 @@ SELECT tag.name, COUNT(tag.name) AS count
         GROUP BY tag.name;
 */
 
-export function getCommentById(id) {
+export function getCommentByPostId(id) {
     return new Promise((resolve, reject) => {
         db.all(
             `SELECT comment.*, user.username AS username
@@ -409,7 +408,7 @@ export function getCommentById(id) {
             `,
             (error, comment) => {
                 if (error) {
-                    console.log('getCommentById', error);
+                    console.log('getCommentByPostId', error);
                 }
                 resolve(comment);
             }
@@ -450,5 +449,19 @@ export function login(username, password) {
                 });
             });
         });
+    });
+}
+
+export function newPostComment({ userId, articleId, comment }) {
+    return new Promise((resolve, reject) => {
+        let sql = 'INSERT INTO comment (article_id, user_id, content, created_at) VALUES(?,?,?,?)';
+        db.run(sql, [articleId, userId, comment, Date.now()], (error) => {
+            if (error) {
+                console.log('newPostComment', error);
+                reject();
+                return;
+            }
+        });
+        resolve();
     });
 }

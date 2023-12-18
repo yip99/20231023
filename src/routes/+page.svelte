@@ -26,14 +26,13 @@
 		// }
 		await new Promise((resolve, reject) => {
 			timer = setTimeout(async () => {
-				let response = await fetch(`/api?${new URLSearchParams({query,tag:JSON.stringify(filteredTags)}).toString()}`);
+				let response = await fetch(`/api/searchPost?${new URLSearchParams({query,tag:JSON.stringify(filteredTags)}).toString()}`);
 				searchResult = await response.json();
                 resolve();
 			}, 0);
 		});
-		console.log(searchResult.articles);
 
-		fuse = new Fuse(searchResult.articles, {
+		fuse = new Fuse(searchResult, {
 			keys: ['title', 'search_content'],
 			includeScore: true,
 			includeMatches: true,
@@ -51,7 +50,7 @@
 				let key = fuseResult[i].matches[j].key;
 				for (let k = fuseResult[i].matches[j].indices.length - 1; k >= 0; k--) {
 					// console.log(index, key, fuseResult[i].matches[j].indices[k]);
-					searchResult.articles[index][key] = highlight(searchResult.articles[index][key], fuseResult[i].matches[j].indices[k][0], fuseResult[i].matches[j].indices[k][1] + 1);
+					searchResult[index][key] = highlight(searchResult[index][key], fuseResult[i].matches[j].indices[k][0], fuseResult[i].matches[j].indices[k][1] + 1);
 				}
 			}
 		}
@@ -112,7 +111,7 @@
 		<!-- <th name="author">Author</th> -->
 		<!-- <th name="uploaded-at">Uploaded at</th> -->
 		<!-- </tr> -->
-		{#each searchResult?.articles || data?.articles as article}
+		{#each searchResult || data?.articles as article}
 			<tr>
 				<td name="title" title={article.title}>
 					<a href="/article/{article.slug}">{@html article.title}</a>

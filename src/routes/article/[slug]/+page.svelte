@@ -8,7 +8,7 @@
 <main>
 	<section id="main-center">
 		<Article data="{data.article}" />
-        <Comment data="{data.comment}" />
+        <Comment data="{{articleId:data.article.id , comment:data.comment}}" />
 	</section>
 </main>
 

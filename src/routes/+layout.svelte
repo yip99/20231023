@@ -52,22 +52,24 @@
     nav {
 		display: flex;
         justify-content: space-between;
-    }
-	.nav-left {
-		/* width: var(--max-width); */
-		display: flex;
-		gap: 2em;
-		/* z-index: 1; */
 		position: sticky;
 		top: 0;
+		background-color: var(--color-bg);
+		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    nav > * {
+		display: flex;
+		gap: 2em;
+    }
+	.nav-left {
+		/* z-index: 1; */
+		/* width: var(--max-width); */
 		/* height: 3rem; */
 		/* height: 100%; */
 		/* align-items: center; */
 		/* padding: 0 1rem; */
 		/* margin: 0 auto; */
 		/* justify-content: space-between; */
-		background-color: var(--color-bg);
-		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 		/* margin: 0 auto; */
 	}
 	nav a {
