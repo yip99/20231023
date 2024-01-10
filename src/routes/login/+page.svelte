@@ -31,7 +31,8 @@
         let responseUser = await response.json();
         message = 'login successed';
         $user = responseUser;
-        await goto('/');
+        // await goto('/');
+        history.back();
     }
     async function signup() {
         errorMessage = '';

@@ -27,7 +27,11 @@
     <div class="input">
         <div class="input-content" id="input-content" contenteditable="true"></div>
         <div class="input-foot">
-            <a href="#" class="submit" on:click="{newComment}">comment</a>
+            {#if $user}
+                <a href="#" class="submit" on:click="{newComment}">comment</a>
+            {:else}
+                <a href="/login" class="submit" on:click="{newComment}">Login</a>
+            {/if}
         </div>
     </div>
     {#each data.comment as comment}

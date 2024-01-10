@@ -5,7 +5,12 @@
 	let query = '';
 	let filteredTags = [...data.tags.map((tag) => tag.name)];
 	let searchResult;
+	let searchResultCount;
 	let timer;
+    $: {
+        console.log(data.articles.length)
+        console.log(data.articleCount)
+    };
 	// onMount(() => {});
 	function formatDate(timestamp) {
 		let date = new Date(timestamp);
@@ -27,7 +32,7 @@
 		await new Promise((resolve, reject) => {
 			timer = setTimeout(async () => {
 				let response = await fetch(`/api/searchPost?${new URLSearchParams({query,tag:JSON.stringify(filteredTags)}).toString()}`);
-				searchResult = await response.json();
+				({articles: searchResult, articleCount: searchResultCount} = await response.json());
                 resolve();
 			}, 0);
 		});
@@ -67,11 +72,6 @@
 			filteredTags = [];
 		}
 	}
-	// $: console.log(query);
-	// $: console.log(filteredTags);
-	// $: if (query || filteredTags) {
-	// 	search();
-	// };
 </script>
 
 <svelte:head>

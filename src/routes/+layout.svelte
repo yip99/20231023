@@ -9,9 +9,10 @@
 <script>
     import { goto } from "$app/navigation";
     import { user } from '$lib/store/user.js';
-	import '../index.css';
+	  import '../index.css';
     export let data;
-    $: if(data?.user) $user = data.user;
+    // $: if(data?.user) $user = data.user;
+    $user = data.user;
 
     async function logout() {
         await fetch('/api/logout');

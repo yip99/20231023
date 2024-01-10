@@ -1,4 +1,4 @@
-import { getAllPublicArticle, getAllTag, search } from '$lib/server/database/index.js';
+import { getPublicArticle, getAllTag, search } from '$lib/server/database/index.js';
 import { json } from '@sveltejs/kit';
 export async function GET({ params, url }) {
 	console.log(url.searchParams);
@@ -13,7 +13,7 @@ export async function GET({ params, url }) {
 		return json({ articles, tags });
 	}
 	if (!articles) {
-		articles = await getAllPublicArticle();
+		articles = await getPublicArticle();
 	}
 	return json({ articles, tags });
 }

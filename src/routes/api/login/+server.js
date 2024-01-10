@@ -9,10 +9,10 @@ export async function POST(event) {
         });
     });
 
-    event.locals.user = user;
-    event.cookies.set('session_id', `${user.sessionId}`, {
+    // event.locals.user = user;
+    event.cookies.set('session_token', `${user.session_token}`, {
         path: "/",
-        maxAge: 60 * 60 * 24,
+        // maxAge: 60 * 60 * 24,
     });
 
     return json(user);

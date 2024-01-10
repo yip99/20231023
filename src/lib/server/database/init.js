@@ -1,10 +1,10 @@
+import bcrypt from "bcrypt";
 import { dbRun, newArticle, signup, newComment } from '.';
 
 export const init = async () => {
     // for (let statement of initQuery) {
     await dbRun(initQuery);
     // }
-    console.log('created table');
     await newArticle(
         ...[
             'HTML elements',
@@ -308,7 +308,6 @@ To deploy your app, you may need to install an adapter for your target environme
             ['sveltejs']
         ]
     );
-    console.log('init 1');
     await newArticle(
         ...[
             'SQLite Node.js',
@@ -741,11 +740,28 @@ node-sqlite3 is BSD licensed.`,
         content: 'comment 3',
         createdAt: Date.now(),
     });
-    await signup({
-        username: 'user 1',
-        hash: '123'
+    await bcrypt.hash('asd', 10).then(async function (hash) {
+        await signup({ username: 'asd', hash }).catch(e => {
+            console.log(e);
+        });
     });
-    console.log('init 2');
+    let promises = [];
+    for (let i = 0; i < 100; i++) {
+        let title = `Post ${1000 + i}`;
+        let slug = 1000 + i;
+        let status = 'public';
+        let thumbnail = '';
+        let content = `content ${1000 + i}`;
+        let search_content = `content ${1000 + i}`;
+        let tag = ['tag1'];
+        let author = ['author1'];
+        promises.push(
+            new Promise((resolve, reject) => {
+                newArticle(title, slug, status, thumbnail, content, search_content, tag, author).then(() => { resolve() });
+            })
+        );
+    }
+    await Promise.all(promises);
 };
 
 const initQuery = [
@@ -756,6 +772,7 @@ const initQuery = [
     'DROP TABLE IF EXISTS article',
     'DROP TABLE IF EXISTS user',
     'DROP TABLE IF EXISTS comment',
+    'DROP TABLE IF EXISTS login_session',
     `CREATE TABLE article (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
@@ -826,7 +843,8 @@ const initQuery = [
     `CREATE TABLE login_session (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
-        session_id TEXT UNIQUE,
+        session_token TEXT UNIQUE,
+        expire_timestamp INTEGER,
         timestamp INTEGER,
         FOREIGN KEY(user_id) REFERENCES user(id)
     );`

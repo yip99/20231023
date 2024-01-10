@@ -1,13 +1,7 @@
 import { init } from '$lib/server/database/init.js';
+import { getUserBySession } from '$lib/server/database/index.js';
 
 let initialized = false;
-
-// import { writable } from "svelte/store";
-// import { setContext } from 'svelte';
-// 
-// const user = writable(0);
-// user.set({ username: 'username' });
-// setContext('user', user);
 
 export async function handle({ event, resolve }) {
     if (!initialized) {
@@ -16,17 +10,18 @@ export async function handle({ event, resolve }) {
         console.log('initialized');
     }
 
-    // const auth_token = event.cookies.get("auth_token");
+    const session_token = event.cookies.get("session_token");
+    let user = session_token ? await getUserBySession(session_token).catch(error => console.log(error)) : null;
+    if (user) {
+        event.locals.user = user;
+    } else {
+        event.cookies.delete('session_token', { path: '/' });
+    }
     // const bearer_token = event.request.headers
     //     .get("Authorization")
     //     ?.split(" ")[1];
     // const token = auth_token ?? bearer_token;
 
-    // if (token) {
-    //     event.locals.user = token;
-    // }
-
     const response = await resolve(event);
     return response;
 }
-// todo

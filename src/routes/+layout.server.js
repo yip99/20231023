@@ -1,10 +1,7 @@
-export async function load({ cookies }) {
+export async function load({ locals }) {
     let data = {};
-    let auth_token = cookies.get('auth_token');
-    if (auth_token) {
-        data.user = {
-            username: auth_token // todo
-        }
+    if (locals.user) {
+        data.user = locals.user
     }
 
     return data;

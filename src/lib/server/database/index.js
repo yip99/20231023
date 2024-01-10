@@ -3,38 +3,94 @@ import bcrypt from 'bcrypt';
 import { database_path } from '$env/static/private';
 const db = new sqlite3.Database(database_path);
 
-export function getAllPublicArticle() {
+export function getArticles({ query = null, tag = null, limit = 20, offset = 0, status = ['public'] } = {}) {
     return new Promise((resolve, reject) => {
-        db.all(
-            `SELECT article.*,
-            '["' || (
-            SELECT group_concat(tag.name, '","')
-            FROM article_tag
-            LEFT JOIN tag ON article_tag.tag_id = tag.id
-            WHERE article_tag.article_id = article.id
-            ) || '"]' AS tag,
-            '["' || (
-            SELECT group_concat(author.name, '","')
-            FROM article_author
-            LEFT JOIN author ON article_author.author_id = author.id
-            WHERE article_author.article_id = article.id
-            ) || '"]' AS author
-            FROM article
-            WHERE article.status = 'public'
-            GROUP BY article.id;`,
-            (error, articles) => {
-                if (error) {
-                    console.log(error);
+        let promises = [];
+        let conditions = [];
+        promises.push(
+            new Promise((resolve, reject) => {
+                let sql = `
+                    SELECT article.*,
+                    '["' || (
+                        SELECT group_concat(tag.name, '","')
+                        FROM article_tag
+                        LEFT JOIN tag ON article_tag.tag_id = tag.id
+                        WHERE article_tag.article_id = article.id
+                    ) || '"]' AS tag,
+                    '["' || (
+                        SELECT group_concat(author.name, '","')
+                        FROM article_author
+                        LEFT JOIN author ON article_author.author_id = author.id
+                        WHERE article_author.article_id = article.id
+                    ) || '"]' AS author
+                    FROM article`;
+                if (tag) {
+                    conditions.push(`
+                    article.id IN 
+                    (
+                        SELECT 
+                        article_tag.article_id 
+                        FROM article_tag 
+                        WHERE article_tag.tag_id IN 
+                        (
+                            SELECT tag.id 
+                            FROM tag 
+                            WHERE tag.name IN ('${tag.join("', '")}')
+                        )
+                    )`);
                 }
-                for (let i = 0; i < articles?.length; i++) {
-                    articles[i].tag = JSON.parse(articles[i].tag);
-                    articles[i].author = JSON.parse(articles[i].author);
+                if (query) {
+                    query = query.split('').map((char) => {
+                        return char === "'" ? "\\''" : `\\${char}`;
+                    }).join('');
+                    conditions.push(`(title LIKE '%${query}%' ESCAPE '\\' OR search_content LIKE '%${query}%' ESCAPE '\\')`);
                 }
-                const size = new TextEncoder().encode(JSON.stringify(articles)).length;
-                console.log(`All public articles size: ${Math.round(((size / 1024) + Number.EPSILON) * 100) / 100} kb (${articles.length})`);
-                resolve(articles);
-            }
+                conditions.push(`article.status IN ('${status.join(`', '`)}')`);
+                if (conditions.length > 0) {
+                    sql += ' WHERE ';
+                    sql += conditions.join(' AND ');
+                }
+                sql += ` Limit ${offset}, ${limit}`;
+                console.log('sql: ', sql.replace('\n', ''));
+                db.all(sql, (error, articles) => {
+                    if (error) {
+                        console.log(error);
+                        reject(error);
+                        return;
+                    }
+                    for (let i = 0; i < articles?.length; i++) {
+                        articles[i].tag = JSON.parse(articles[i].tag);
+                        articles[i].author = JSON.parse(articles[i].author);
+                    }
+                    const size = new TextEncoder().encode(JSON.stringify(articles)).length;
+                    console.log(`articles size: ${Math.round(((size / 1024) + Number.EPSILON) * 100) / 100} kb (${articles.length})`);
+                    resolve(articles);
+                }
+                );
+            })
         );
+        promises.push(
+            new Promise((resolve, reject) => {
+                let sql = `SELECT count(*) FROM article`;
+                if (conditions.length > 0) {
+                    sql += ' WHERE ';
+                    sql += conditions.join(' AND ');
+                }
+                db.get(sql,
+                    (error, result) => {
+                        if (error) {
+                            console.log(error);
+                            reject(error);
+                            return;
+                        }
+                        resolve(result['count(*)']);
+                    }
+                );
+            })
+        );
+        Promise.all(promises).then(([articles, articleCount]) => {
+            resolve({ articles, articleCount });
+        })
     });
 }
 
@@ -129,194 +185,56 @@ export function newArticle(title, slug, status, thumbnail, content, search_conte
         let statement = `INSERT INTO article (title,slug,status,thumbnail,content,search_content,uploaded_at) VALUES (?,?,?,?,?,?,?)`;
         let params = [title, slug, status, thumbnail, content, search_content, Date.now()];
         let newArticleId;
-        console.log('start');
-        db.run(statement, params, async function (err) {
-            if (err) {
-                reject(err.message);
-                return;
-            }
-            newArticleId = this.lastID;
+        // console.log('start');
+        db.serialize(() => {
+            db.run(statement, params, function (err) {
+                if (err) {
+                    reject(err.message);
+                    return;
+                }
+                newArticleId = this.lastID;
 
-            db.serialize(() => {
                 for (let i = 0; i < tag?.length; i++) {
-                    console.log('insert tag:', tag[i]);
+                    // console.log('insert tag:', tag[i]);
                     promises.push(
                         new Promise((resolve, reject) => {
-                            db.run(`INSERT OR IGNORE INTO tag(name) VALUES('${tag[i]}')`, function () {
-                                console.log('inserted tag', tag[i]);
-                                resolve();
-                            });
-                        })
-                    );
-                    promises.push(
-                        new Promise((resolve, reject) => {
-                            db.run(`INSERT INTO article_tag (article_id, tag_id) VALUES (?,(SELECT id FROM tag WHERE name = '${tag[i]}'));`, [newArticleId], function () {
-                                console.log('inserted article_tag', tag[i]);
-                                resolve();
-                            });
+                            db.run(`INSERT OR IGNORE INTO tag(name) VALUES('${tag[i]}')`, function (error) {
+                                if (error) {
+                                    console.log('insert tag:', tag[i], error);
+                                }
+                                // console.log('inserted tag', tag[i], 'id', this.lastID);
+                                db.run(`INSERT INTO article_tag (article_id, tag_id) VALUES (?,(SELECT id FROM tag WHERE name = '${tag[i]}'));`, [newArticleId], function () {
+                                    // console.log('inserted article_tag', tag[i]);
+                                    resolve();
+                                })
+                            })
                         })
                     );
                 }
                 for (let i = 0; i < author?.length; i++) {
-                    console.log('insert author', author[i]);
+                    // console.log('insert author', author[i]);
                     promises.push(
                         new Promise((resolve, reject) => {
-                            db.run(`INSERT OR IGNORE INTO author(name) VALUES('${author[i]}')`, function () {
-                                console.log('inserted author', author[i]);
-                                resolve();
-                            });
-                        })
-                    );
-                    promises.push(
-                        new Promise((resolve, reject) => {
-                            db.run(`INSERT INTO article_author (article_id, author_id) VALUES (?,(SELECT id FROM author WHERE name = '${author[i]}'));`, [newArticleId], function () {
-                                console.log('inserted article_author', author[i]);
-                                resolve();
-                            });
+                            db.run(`INSERT OR IGNORE INTO author(name) VALUES('${author[i]}')`, function (error) {
+                                if (error) {
+                                    console.log('insert author', author[i], error);
+                                }
+
+                                // console.log('inserted author', author[i], 'id', this.lastID);
+                                db.run(`INSERT INTO article_author (article_id, author_id) VALUES (?,(SELECT id FROM author WHERE name = '${author[i]}'));`, [newArticleId], function () {
+                                    // console.log('inserted article_author', author[i]);
+                                    resolve();
+                                })
+                            })
                         })
                     );
                 }
+                Promise.all(promises).then((...responses) => {
+                    // console.log('total row inserted:', promises.length, responses.length);
+                    console.log(`inserted new article ${newArticleId}`);
+                    resolve(newArticleId);
+                });
             });
-
-            console.log('total row to insert:', promises.length);
-            await Promise.all(promises).then(() => {
-                console.log(`A row has been inserted with rowid ${newArticleId}`);
-                resolve(newArticleId);
-            });
-        });
-    });
-}
-
-export function searchPost({ query, tag, order, skip, count }) {
-    console.log({ query, tag });
-    query = query
-        .split('')
-        .map((char) => {
-            return char === "'" ? "\\''" : `\\${char}`;
-        })
-        .join('');
-
-    return new Promise((resolve, reject) => {
-        // let statement = `
-        // SELECT article.*,
-        // '["' || (
-        //     SELECT group_concat(tag.name, '","')
-        //     FROM article_tag
-        //     LEFT JOIN tag ON article_tag.tag_id = tag.id
-        //     WHERE article_tag.article_id = article.id
-        //     ) || '"]' AS tag,
-        // '["' || (
-        //     SELECT group_concat(author.name, '","')
-        //     FROM article_author
-        //     LEFT JOIN author ON article_author.author_id = author.id
-        //     WHERE article_author.article_id = article.id
-        // ) || '"]' AS author,
-        // (SELECT highlight(article_fts, 2, '<mark>', '</mark>') FROM article_fts WHERE ROWID = article.id AND article_fts MATCH '${query}') AS highlighted_content
-        // FROM article
-        // WHERE ROWID IN (SELECT ROWID FROM article_fts WHERE article_fts MATCH '${query}'
-        // ${order ? 'ORDER BY rank' : ''})
-        // AND article.status = 'public'
-        // ${typeof skip !== 'undefined' && typeof count !== 'undefined' ? `LIMIT ${skip}, ${count}` : ''};
-        // `;
-
-        // let statement = `SELECT
-        // article.*,
-        // article_fts.rowid,
-        // highlight(article_fts, 0, '<mark>', '</mark>') AS highlighted_title,
-        // highlight(article_fts, 1, '<mark>', '</mark>') AS highlighted_summary,
-        // highlight(article_fts, 2, '<mark>', '</mark>') AS highlighted_content,
-        // '["' || (
-        //     SELECT group_concat(tag.name, '","')
-        //     FROM article_tag
-        //     LEFT JOIN tag ON article_tag.tag_id = tag.id
-        //     WHERE article_tag.article_id = article.id
-        // ) || '"]' AS tag,
-        // '["' || (
-        //     SELECT group_concat(author.name, '","')
-        //     FROM article_author
-        //     LEFT JOIN author ON article_author.author_id = author.id
-        //     WHERE article_author.article_id = article.id
-        // ) || '"]' AS author
-        // FROM article_fts
-        // LEFT JOIN article ON article.id = article_fts.rowid
-        // WHERE article_fts MATCH '${query}'
-        // `;
-        // let statement = `SELECT
-        // *,
-        // '["' || (
-        //     SELECT group_concat(tag.name, '","')
-        //     FROM article_tag
-        //     LEFT JOIN tag ON article_tag.tag_id = tag.id
-        //     WHERE article_tag.article_id = article.id
-        // ) || '"]' AS tag,
-        // '["' || (
-        //     SELECT group_concat(author.name, '","')
-        //     FROM article_author
-        //     LEFT JOIN author ON article_author.author_id = author.id
-        //     WHERE article_author.article_id = article.id
-        // ) || '"]' AS author
-        // FROM article
-        // WHERE
-        // title GLOB '*${query}*' COLLATE NOCASE OR
-        // search_content GLOB '*${query}*' COLLATE NOCASE
-        // `
-        let statement = `
-SELECT 
-*,
-'["' || (
-    SELECT group_concat(tag.name, '","')
-    FROM article_tag
-    LEFT JOIN tag ON article_tag.tag_id = tag.id
-    WHERE article_tag.article_id = article.id
-) || '"]' AS tag,
-'["' || (
-    SELECT group_concat(author.name, '","')
-    FROM article_author
-    LEFT JOIN author ON article_author.author_id = author.id
-    WHERE article_author.article_id = article.id
-) || '"]' AS author
-FROM article
-`;
-        let condition = [];
-
-        if (tag) {
-            condition.push(`
-article.id in(select article_tag.article_id
-    from article_tag
-    where article_tag.tag_id in (select tag.id
-    from tag
-    where tag.name in ('${tag.join("', '")}')))
-`);
-        }
-        if (query) {
-            condition.push(`
-(title LIKE '%${query}%' ESCAPE '\\' OR 
-search_content LIKE '%${query}%' ESCAPE '\\')
-`);
-        }
-        if (condition.length > 0) {
-            statement += ' WHERE ';
-            statement += condition.join(' AND ');
-        }
-        console.log(statement);
-        db.all(statement, (err, articles) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            console.log(typeof articles === 'undefined');
-            if (typeof articles === 'undefined') {
-                reject();
-                return;
-            }
-            for (let i = 0; i < articles?.length; i++) {
-                articles[i].tag = JSON.parse(articles[i].tag);
-                articles[i].author = JSON.parse(articles[i].author);
-                console.log(articles[i].title);
-            }
-            const size = new TextEncoder().encode(JSON.stringify(articles)).length;
-            console.log(`matched public articles size: ${Math.round(((size / 1024) + Number.EPSILON) * 100) / 100} kb (${articles?.length})`);
-            resolve(articles);
         });
     });
 }
@@ -419,7 +337,11 @@ export function getCommentByPostId(id) {
 export function login(username, password) {
     return new Promise((resolve, reject) => {
         db.serialize(() => {
-            db.get('SELECT * FROM user WHERE username = ?', [username], async (error, user) => {
+            let sql;
+            let values;
+            sql = 'SELECT * FROM user WHERE username = ?';
+            values = [username];
+            db.get(sql, [username], async (error, user) => {
                 if (error) {
                     console.log(error);
                     reject();
@@ -433,19 +355,18 @@ export function login(username, password) {
                     reject();
                     return;
                 };
-                let sessionId = crypto.randomUUID();
-                db.run('INSERT INTO login_session (user_id, session_id, timestamp) VALUES (?,?,?)', [user.id, sessionId, Date.now()], (error) => {
+                let session_token = crypto.randomUUID();
+                sql = 'INSERT INTO login_session (user_id, session_token, expire_timestamp, timestamp) VALUES (?,?,?,?)';
+                let timestamp = Date.now();
+                let expire_timestamp = timestamp + (24 * 60 * 60 * 1000);
+                values = [user.id, session_token, expire_timestamp, timestamp];
+                db.run(sql, values, (error) => {
                     if (error) {
                         console.log('insert login_session', error);
                         reject();
                         return;
                     }
-                });
-                resolve({
-                    id: user.id,
-                    username: user.username,
-                    role: user.role,
-                    sessionId
+                    getUserBySession(session_token).then(user => resolve(user));
                 });
             });
         });
@@ -453,15 +374,62 @@ export function login(username, password) {
 }
 
 export function newPostComment({ userId, articleId, comment }) {
-    return new Promise((resolve, reject) => {
+    return (new Promise((resolve, reject) => {
         let sql = 'INSERT INTO comment (article_id, user_id, content, created_at) VALUES(?,?,?,?)';
-        db.run(sql, [articleId, userId, comment, Date.now()], (error) => {
+        db.run(sql, [articleId, userId, comment, Date.now()], (error, loginSession) => {
             if (error) {
                 console.log('newPostComment', error);
                 reject();
                 return;
             }
+            if (Date.now() > loginSession.expire_timestamp) {
+                reject('session expired');
+                return;
+            }
         });
         resolve();
+    }));
+}
+
+export function getUserBySession(sessionToken) {
+    return new Promise((resolve, reject) => {
+        let sql = 'SELECT * FROM login_session WHERE session_token = ?';
+        db.serialize(() => {
+            db.get(sql, [sessionToken], (error, session) => {
+                if (error) {
+                    console.log('getUserBySession', error);
+                    reject();
+                    return;
+                }
+                if (!session) {
+                    reject();
+                    return;
+                }
+                let session_token = session.session_token;
+                let expire_timestamp = session.expire_timestamp;
+                sql = 'SELECT * FROM user WHERE id = ?';
+                db.get(sql, [session.user_id], (error, user) => {
+                    if (error) {
+                        console.log(error);
+                        reject();
+                        return;
+                    }
+                    console.log({
+                        id: user.id,
+                        username: user.username,
+                        role: user.role,
+                        session_token,
+                        expire_timestamp
+                    });
+                    resolve({
+                        id: user.id,
+                        username: user.username,
+                        role: user.role,
+                        session_token,
+                        expire_timestamp
+                    });
+                });
+            });
+        });
     });
 }
