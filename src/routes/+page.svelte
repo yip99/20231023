@@ -1,16 +1,18 @@
 <script>
 	// import { onMount } from 'svelte';
+    // import Badge from '$lib/components/ui/badge/badge.svelte';
+    import Filter from '$lib/components/ui/Filter.svelte';
 	export let data;
 	let fuse;
 	let query = '';
-	let filteredTags = [...data.tags.map((tag) => tag.name)];
+	// let filteredTags = [...data.tags.map((tag) => tag.name)];
+	let filteredTags = [];
 	let searchResult;
 	let searchResultCount;
 	let timer;
-    $: {
-        console.log(data.articles.length)
-        console.log(data.articleCount)
-    };
+    // $: if(filteredTags) {
+    //     search();
+    // }
 	// onMount(() => {});
 	function formatDate(timestamp) {
 		let date = new Date(timestamp);
@@ -31,7 +33,14 @@
 		// }
 		await new Promise((resolve, reject) => {
 			timer = setTimeout(async () => {
-				let response = await fetch(`/api/searchPost?${new URLSearchParams({query,tag:JSON.stringify(filteredTags)}).toString()}`);
+                let data = {};
+                if(query.length) {
+                    data.query = query;
+                }
+                if(filteredTags.length) {
+                    data.tag = JSON.stringify(filteredTags);
+                }
+				let response = await fetch(`/api/searchPost?${new URLSearchParams(data).toString()}`);
 				({articles: searchResult, articleCount: searchResultCount} = await response.json());
                 resolve();
 			}, 0);
@@ -83,26 +92,7 @@
 		<div><span>Search:</span><input type="text" placeholder="" id="input-search" bind:value={query} on:input={search} /></div>
 		<!-- <div><span>Tag:</span><input type="text" placeholder="" id="input-tag" /></div> -->
 		<div class="filter">
-			<div class="filter-all-toggle">
-				<p>Tags</p>
-				<label id="label-tag-all">
-					<!-- All({data.tags.reduce((n, { count }) => n + count, 0)})s -->
-					All({Object.keys(data.tags).length})
-					<input type="text" value="all" on:click={(event) => { allTagsToggle(event); search(); }} hidden />
-				</label>
-				<label id="label-tag-none">
-					None 
-                    <input type="text" value="none" on:click={(event) => { allTagsToggle(event); search(); }} hidden />
-				</label>
-			</div>
-			<div class="filter-tags">
-				{#each data.tags as tag}
-					<label id="label-tag-{data.tags}">
-						{tag.name}({tag.count})
-						<input type="checkbox" name="checkboxTag" value={tag.name} bind:group={filteredTags} on:change={search} hidden />
-					</label>
-				{/each}
-			</div>
+            <Filter type="tag" options={data.tags} bind:selected={filteredTags} on:select={search} />
 		</div>
 	</div>
 	<table id="articles">
