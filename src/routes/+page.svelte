@@ -1,6 +1,6 @@
 <script>
 	// import { onMount } from 'svelte';
-    // import Badge from '$lib/components/ui/badge/badge.svelte';
+    import Badge from '$lib/components/ui/Badge.svelte';
     import Filter from '$lib/components/ui/Filter.svelte';
 	export let data;
 	let fuse;
@@ -72,15 +72,6 @@
 	function highlight(text, start, end) {
 		return text.slice(0, start) + '<mark>' + text.slice(start, end) + '</mark>' + text.slice(end);
 	}
-	function allTagsToggle({ target: { value } }) {
-		if (value === 'all') {
-			filteredTags = [...data.tags.map((tag) => tag.name)];
-			// search();
-		}
-		if (value === 'none') {
-			filteredTags = [];
-		}
-	}
 </script>
 
 <svelte:head>
@@ -92,7 +83,7 @@
 		<div><span>Search:</span><input type="text" placeholder="" id="input-search" bind:value={query} on:input={search} /></div>
 		<!-- <div><span>Tag:</span><input type="text" placeholder="" id="input-tag" /></div> -->
 		<div class="filter">
-            <Filter type="tag" options={data.tags} bind:selected={filteredTags} on:select={search} />
+            <Filter type="tags" options={data.tags} bind:selected={filteredTags} on:select={search} />
 		</div>
 	</div>
 	<table id="articles">
@@ -103,11 +94,12 @@
 		<!-- </tr> -->
 		{#each searchResult || data?.articles as article}
 			<tr>
-				<td name="title" title={article.title}>
-					<a href="/article/{article.slug}">{@html article.title}</a>
+				<td name="title">
+					<a href="/article/{article.slug}" title={article.title}>{@html article.title}</a>
 					<div name="tags">
 						{#each article.tag as tag}
-							<span name="tag" title={tag}>{tag}</span>
+                            <Badge>{tag}</Badge>
+							<!-- <span name="tag" title={tag}>{tag}</span> -->
 						{/each}
 					</div>
 				</td>

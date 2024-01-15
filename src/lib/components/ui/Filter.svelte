@@ -1,17 +1,24 @@
 <script>
+    import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
     export let type;
     export let options;
     export let selected = [];
     let search = '';
+    let filter;
     $: searchResult = options.filter(({name}) => name.toLowerCase().includes(search.toLowerCase()));
-    function select() {
-        dispatch('select');
-	}
+    
+	onMount(() => {
+        document.addEventListener('click', event => {
+            if (!filter?.contains(event.target)) {
+                filter.querySelector('input[type=checkbox]').checked = false;
+            }
+        });
+    });
 </script>
 
-<div class="filter-{type}">
+<div class="filter-{type}" bind:this="{filter}">
     <label>
         + {type}: {selected.length ? selected.join(', ') : 'All'}
         <input type="checkbox" hidden />
@@ -23,17 +30,17 @@
         <div class="options">
             {#each searchResult || options as option}
                 <label id="option-{option.name}">
-                    <input type="checkbox" value={option.name} bind:group={selected} on:change="{select}" />
-                    {option.name}({option.count})
+                    <input type="checkbox" value={option.name} bind:group={selected} on:change={() => dispatch('select')} />
+                    <span>{option.name}</span><!-- {#if option.count} ({option.count}) {/if} -->
                 </label>
             {/each}
-            {#if searchResult.length === 0}
+            {#if searchResult?.length === 0}
                 <span>No results found</span>
             {/if}
         </div>
         {#if selected.length}
             <div class="reset">
-                <button on:click="{() => {selected = []; search = ''}}">
+                <button on:click="{() => {selected = []; search = ''; dispatch('select');}}">
                     Reset
                 </button>
             </div>
@@ -65,6 +72,7 @@
         box-sizing: border-box;
         border: 1px solid #e5e7eb;
         box-shadow: 0 0 #0000,0 0 #0000,0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
+        z-index: 1;
     }
 
     .dropdown input {
