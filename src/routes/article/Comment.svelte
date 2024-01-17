@@ -28,7 +28,7 @@
         <div class="input-content" id="input-content" contenteditable="true"></div>
         <div class="input-foot">
             {#if $user}
-                <a href="#" class="submit" on:click="{newComment}">comment</a>
+                <button class="submit" on:click="{newComment}">comment</button>
             {:else}
                 <a href="/login" class="submit" on:click="{newComment}">Login</a>
             {/if}

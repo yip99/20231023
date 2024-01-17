@@ -1,4 +1,4 @@
-import { getArticles, getAllTag, dbRun, search } from '$lib/server/database/index.js';
+import { getArticles, getAllTag } from '$lib/server/database/index.js';
 
 export async function load({ params, url }) {
     let tags = await getAllTag();
@@ -6,7 +6,7 @@ export async function load({ params, url }) {
     let articleCount;
     let query = url.searchParams.get('query');
     if (query) {
-        ({ articles, articleCount } = await search(query));
+        ({ articles, articleCount } = await getArticles(query));
         return { articles, articleCount, tags };
     } else {
         ({ articles, articleCount } = await getArticles());

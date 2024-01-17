@@ -38,7 +38,7 @@
 
 	<div class="nav-right">
         {#if $user}
-		    <a href="#" on:click="{logout}">logout</a>
+		    <button class="login" on:click="{logout}">logout</button>
         {:else}
 		    <a href="/login">login</a>
         {/if}
@@ -79,4 +79,11 @@
 	:global(main) {
 		margin-top: 1em;
 	}
+    .login {
+        padding: 0;
+        background-color: var(--color-bg);
+        color: var(--color-blossom);
+        border-radius: 0; 
+        border: 0px;
+    }
 </style>

@@ -28,11 +28,27 @@
 		// 		headings = [...headings, slug.title];
 		// 	}
 		// });
-        document.querySelectorAll('#article-content > *:is(h1, h2, h3, h4, h5, h6)').forEach(element => {
-            // console.log(element.innerText);
-            headings = [...headings, element.innerText];
+        headings = getHeadings();
+        // highlightCurrentViewInTOC();
+        document.addEventListener('scroll', (event) => {
+            let headings = getHeadings();
+            for (let i = 0; i < headings.length; i++) {
+                let heading = document.querySelector(`a[href="#${headings[i].innerText}"]`);
+                if(headings[i].getBoundingClientRect().top >= 0 && (headings[i-1]?.getBoundingClientRect()?.top || -1) < 0) {
+                    heading.classList.add('current-view');
+                } else {
+                    heading.classList.remove('current-view');
+                }
+            }
         });
 	});
+    function getHeadings() {
+        let headings = [];
+        document.querySelectorAll('#article-content > *:is(h1, h2, h3, h4, h5, h6)').forEach(element => {
+            headings.push(element);
+        });
+        return headings;
+    }
 	function formatDate(timestamp) {
 		if (!timestamp) {
 			return timestamp;
@@ -64,8 +80,9 @@
         </div>
 	</article>
 	<ul id="table-of-content">
-		{#each headings as id}
-			<li><a href="#{id}">{id}</a></li>
+        {#each headings as heading, i}
+            {@const currentView = heading.getBoundingClientRect().top >= 0 && (headings[i-1]?.getBoundingClientRect()?.top || -1) < 0}
+			<li><a href="#{heading.innerText}" class="{currentView ? 'current-view' : ''}">{heading.innerText}</a></li>
 		{/each}
 	</ul>
 </section>
@@ -102,4 +119,11 @@
 	#table-of-content a {
 		text-decoration: none;
 	}
+    a.current-view {
+        color: var(--color-fade);
+        font-weight: 700;
+    }
+    a.current-view::before {
+        content: '> ';
+    }
 </style>

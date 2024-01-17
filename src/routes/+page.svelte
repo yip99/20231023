@@ -41,7 +41,8 @@
                     data.tag = JSON.stringify(filteredTags);
                 }
 				let response = await fetch(`/api/searchPost?${new URLSearchParams(data).toString()}`);
-				({articles: searchResult, articleCount: searchResultCount} = await response.json());
+				// ({articles: searchResult, articleCount: searchResultCount} = await response.json());
+				searchResult = (await response.json()).articles;
                 resolve();
 			}, 0);
 		});

@@ -90,6 +90,9 @@ export function getArticles({ query = null, tag = null, limit = 20, offset = 0, 
         );
         Promise.all(promises).then(([articles, articleCount]) => {
             resolve({ articles, articleCount });
+        }).catch(error => {
+            reject(error);
+            return;
         })
     });
 }

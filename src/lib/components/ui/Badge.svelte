@@ -11,7 +11,8 @@
     span {
         background-color: hsl(240 4.8% 95.9%);
         padding: .125rem .625rem;
-        border-radius: calc(0.5rem - 2px);
+        border-radius: max(100vw, 100vh);
         width: min-content;
+        cursor: default;
     }
 </style>
