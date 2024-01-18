@@ -9,10 +9,11 @@
 
 <style>
     span {
-        background-color: hsl(240 4.8% 95.9%);
+        background-color: var(--color-bg-alt);
         padding: .125rem .625rem;
         border-radius: max(100vw, 100vh);
         width: min-content;
         cursor: default;
+        font-weight: 600;
     }
 </style>

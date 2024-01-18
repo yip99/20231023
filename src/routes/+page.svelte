@@ -2,6 +2,8 @@
 	// import { onMount } from 'svelte';
     import Badge from '$lib/components/ui/Badge.svelte';
     import Filter from '$lib/components/ui/Filter.svelte';
+    import Pagination from '$lib/components/ui/Pagination.svelte';
+    import { formatDate } from '$lib/formatDate.js';
 	export let data;
 	let fuse;
 	let query = '';
@@ -10,21 +12,11 @@
 	let searchResult;
 	let searchResultCount;
 	let timer;
+    let numberOfDisplay = 20;
     // $: if(filteredTags) {
     //     search();
     // }
 	// onMount(() => {});
-	function formatDate(timestamp) {
-		let date = new Date(timestamp);
-		let output = '';
-		output += `${date.getFullYear()}`.padStart(4, '0') + '-';
-		output += `${date.getMonth() + 1}`.padStart(2, '0') + '-';
-		output += `${date.getDate()}`.padStart(2, '0') + ' ';
-		// output += `${date.getHours()}`.padStart(2, '0') + ':';
-		// output += `${date.getMinutes()}`.padStart(2, '0') + ':';
-		// output += `${date.getSeconds()}`.padStart(2, '0');
-		return output;
-	}
 	async function search() {
 		clearTimeout(timer);
 		// if (value === '') {
@@ -125,6 +117,9 @@
 			{/if}
 		{/each}
 	</table>
+    {#if data?.articleCount > (searchResult?.length || data?.articles.length)}
+        <Pagination currentPage={1} totalPages={searchResultCount || data.articleCount} on:goPage={(event) => {console.log(event.detail)}}></Pagination>
+    {/if}
 </section>
 
 <style>
