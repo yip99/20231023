@@ -12,7 +12,8 @@
 	let searchResult;
 	let searchResultCount;
 	let timer;
-    let numberOfDisplay = 20;
+    let numberOfPostToDisplay = data.numberOfPostToDisplay;
+    let offset = data.offset;
     // $: if(filteredTags) {
     //     search();
     // }
@@ -32,9 +33,12 @@
                 if(filteredTags.length) {
                     data.tag = JSON.stringify(filteredTags);
                 }
-				let response = await fetch(`/api/searchPost?${new URLSearchParams(data).toString()}`);
+                data.limit = numberOfPostToDisplay;
+                data.offset = offset;
+				let response = await fetch(`/api/posts?${new URLSearchParams(data).toString()}`);
 				// ({articles: searchResult, articleCount: searchResultCount} = await response.json());
-				searchResult = (await response.json()).articles;
+				// searchResult = (await response.json()).articles;
+                ({ articles: searchResult, articleCount: searchResultCount } = await response.json());
                 resolve();
 			}, 0);
 		});
@@ -118,7 +122,7 @@
 		{/each}
 	</table>
     {#if data?.articleCount > (searchResult?.length || data?.articles.length)}
-        <Pagination currentPage={1} totalPages={searchResultCount || data.articleCount} on:goPage={(event) => {console.log(event.detail)}}></Pagination>
+        <Pagination currentPage={(offset / numberOfPostToDisplay) + 1} totalPages={Math.ceil((searchResultCount || data.articleCount) / numberOfPostToDisplay)} on:goPage={(event) => {offset = (event.detail - 1) * numberOfPostToDisplay; search()}}></Pagination>
     {/if}
 </section>
 

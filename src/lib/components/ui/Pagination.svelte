@@ -3,16 +3,19 @@
     const dispatch = createEventDispatcher();
     export let currentPage;
     export let totalPages;
+    const goPage = (value) => () => { 
+        dispatch('goPage', value);
+    };
 </script>
 
 <div class="Pagination">
-    <button disabled={currentPage <= 1 ? true : false} on:click="{()=>dispatch('goPage', 1)}">{'<<'}</button>
-    <button disabled={currentPage - 1 <= 1 ? true : false} on:click="{()=>dispatch('goPage', Math.max(currentPage - 1, 1))}">{'<'}</button>
+    <button disabled={currentPage <= 1 ? true : false} on:click="{goPage(1)}">{'<<'}</button>
+    <button disabled={currentPage <= 1 ? true : false} on:click="{goPage(Math.max(currentPage - 1, 1))}">{'<'}</button>
     <label>
-        <input type="number" min="1" max="{totalPages}" value={currentPage} />/{totalPages}
+        <input type="number" min="1" max="{totalPages}" value={currentPage} on:keydown="{event => { if(event.key === 'Enter') { goPage(event.target.value)(); } }}"/>/{totalPages}
     </label>
-    <button disabled={currentPage >= totalPages ? true : false} on:click="{()=>dispatch('goPage', Math.min(currentPage + 1, totalPages))}">{'>'}</button>
-    <button disabled={currentPage >= totalPages ? true : false} on:click="{()=>dispatch('goPage', totalPages)}">{'>>'}</button>
+    <button disabled={currentPage >= totalPages ? true : false} on:click="{goPage(Math.min(currentPage + 1, totalPages))}">{'>'}</button>
+    <button disabled={currentPage >= totalPages ? true : false} on:click="{goPage(totalPages)}">{'>>'}</button>
 </div>
 
 <style>
@@ -33,6 +36,10 @@
     }
     button:disabled {
         cursor: default;
+    }
+    button:disabled:hover {
+        background-color: unset;
+        color: unset;
     }
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,

@@ -93,11 +93,16 @@
         display: block;
         position: absolute;
     }
-
+    label[id^='option-'] {
+        padding: 0 0.5rem;
+    }
     .reset > button {
         background-color: var(--color-bg);
         color: var(--color-text);
         border: 0;
         width: 100%;
+    }
+    input[type='checkbox']:focus {
+        outline: 0;
     }
 </style>

@@ -5,7 +5,9 @@ export async function GET({ params, url }) {
     let articleCount;
     let data = {
         query: url.searchParams.get('query'),
-        tag: JSON.parse(url.searchParams.get('tag'))
+        tag: JSON.parse(url.searchParams.get('tag')),
+        limit: url.searchParams.get('limit'),
+        offset: url.searchParams.get('offset')
     };
     ({ articles, articleCount } = await getArticles(data));
     return json({ articles, articleCount });
